@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRB Ecosystem - Brabo Fund</title>
+    <link rel="icon" type="image/png" href="ChatGPT Image 3 de jun. de 2025, 12_02_10.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="ChatGPT Image 3 de jun. de 2025, 12_02_10.png" alt="PICA Logo" class="logo">
+                <div class="brand-info">
+                    <span class="brand-name">BRABO MARKETS</span>
+                    <span class="brand-tagline">Brabo DeFi Protocol</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="network-indicator">
+                    <span class="network-status-dot"></span>
+                    <span class="network-name">Base Network</span>
+                </div>
+                <div class="wallet-container">
+                    <button class="connect-wallet-btn" id="connectWalletBtn">
+                        <span class="wallet-icon"></span>
+                        <span class="wallet-text">Connect Wallet</span>
+                    </button>
+                    <div class="wallet-dropdown" id="walletDropdown">
+                        <div class="dropdown-item" id="disconnectBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            <span>Disconnect</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Navigation Tabs -->
+    <div class="page-nav">
+        <div class="page-nav-container">
+            <a href="index.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>Fund</span>
+            </a>
+            <a href="portfolio.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>My Portfolio</span>
+            </a>
+            <a href="liquidity.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span>Liquidity</span>
+            </a>
+            <a href="ecosystem.html" class="page-nav-tab active">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6M5.6 5.6l4.2 4.2m4.4 4.4l4.2 4.2M1 12h6m6 0h6M5.6 18.4l4.2-4.2m4.4-4.4l4.2-4.2"/>
+                </svg>
+                <span>Ecosystem</span>
+            </a>
+            <a href="contracts.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <span>Contracts</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">BRABO ($BRB) Ecosystem</h1>
+            <p class="hero-subtitle">BRABO ($BRB),  pioneering the evolution of fair launch tokenomics with low liquidity projects, using a brand new 20/80 model</p>
+        </div>
+
+        <!-- Ecosystem Overview -->
+        <div class="portfolio-section ecosystem-intro">
+            <div class="ecosystem-intro-content">
+                <h2 class="ecosystem-intro-title">The Death of Low Liquidity. The Birth of Sustainable DeFi.</h2>
+                <p class="ecosystem-intro-text">
+                    <strong>Most of new and low sponsored Web3 projects fails the same way:</strong> shallow liquidity, trapped holders, collapsed trust.
+                    Brabo flips the script with inverted 20/80 tokenomics that solves what kills 99% of launches, for initial low liquidity Web3 project tokens.
+                </p>
+                <p class="ecosystem-intro-text">
+                    <strong>20% Buyback.</strong> Instant buy pressure from the Uniswap pool. Your $BRB delivered immediately.<br>
+                    <strong>80% Liquidity Building.</strong> Systematically deepens the pool. Every transaction strengthens the foundation.
+                </p>
+                <p class="ecosystem-intro-text">
+                    <strong>This isn't just fair launch. This is the evolution Web3 desperately needs.</strong>
+                </p>
+
+                <div class="token-distribution-info">
+                    <h3 class="distribution-title">Token Distribution: Built for Transparency</h3>
+                    <div class="distribution-grid">
+                        <div class="distribution-item">
+                            <div class="distribution-icon initial-lp">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                    <path d="M2 17l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div class="distribution-content">
+                                <div class="distribution-amount">50,000 $BRB <span class="distribution-percentage">(0.5%)</span></div>
+                                <div class="distribution-label">Initial LP Liquidity</div>
+                                <div class="distribution-description">Bootstrapped the initial pool to enable trading</div>
+                            </div>
+                        </div>
+
+                        <div class="distribution-item">
+                            <div class="distribution-icon contract-reserve">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <path d="M3 9h18"/>
+                                    <path d="M9 21V9"/>
+                                </svg>
+                            </div>
+                            <div class="distribution-content">
+                                <div class="distribution-amount">8,000,000 $BRB <span class="distribution-percentage">(80%)</span></div>
+                                <div class="distribution-label">Smart Contract Reserve</div>
+                                <div class="distribution-description">Buyback compensation & liquidity addition from funding transactions</div>
+                            </div>
+                        </div>
+
+                        <div class="distribution-item">
+                            <div class="distribution-icon staking-reserve">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                            </div>
+                            <div class="distribution-content">
+                                <div class="distribution-amount">1,000,000 $BRB <span class="distribution-percentage">(10%)</span></div>
+                                <div class="distribution-label">Staking Reserve</div>
+                                <div class="distribution-description">Reserved for future staking rewards program</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="distribution-note">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 16v-4M12 8h.01"/>
+                        </svg>
+                        <span><strong>Total Supply: 10,000,000 $BRB</strong> — No team allocation, no presale, no hidden wallets. Pure community-driven model. Just 5% allocated for me in case I want to add more Liquidity to project or buy me a BWM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coming Soon Features -->
+        <div class="portfolio-section">
+            <h3 class="portfolio-section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+                Coming Soon
+            </h3>
+
+            <div class="ecosystem-grid">
+                <!-- Staking Card -->
+                <div class="ecosystem-card staking-card">
+                    <div class="ecosystem-card-header">
+                        <div class="ecosystem-icon staking-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <span class="coming-soon-badge">Coming Soon</span>
+                    </div>
+                    <h4 class="ecosystem-card-title">BRB Staking</h4>
+                    <p class="ecosystem-card-description">
+                        Stake your $BRB tokens to earn passive rewards. Lock your tokens for flexible periods
+                        and earn competitive APY while supporting the ecosystem's growth.
+                    </p>
+                    <div class="ecosystem-features">
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Flexible lock periods</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Competitive APY rewards</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Auto-compounding options</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gaming Card -->
+                <div class="ecosystem-card gaming-card">
+                    <div class="ecosystem-card-header">
+                        <div class="ecosystem-icon gaming-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 12h4m4 0h4M6 8h.01M18 8h.01M6 16h.01M18 16h.01M9 2h6v20H9z"/>
+                            </svg>
+                        </div>
+                        <span class="coming-soon-badge">Coming Soon</span>
+                    </div>
+                    <h4 class="ecosystem-card-title">BRB Gaming</h4>
+                    <p class="ecosystem-card-description">
+                        Play-to-earn gaming experiences powered by $BRB. Engage in skill-based games,
+                        tournaments, and challenges to win $BRB rewards and exclusive NFTs.
+                    </p>
+                    <div class="ecosystem-features">
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Play-to-earn mechanics</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Tournament competitions</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Exclusive NFT rewards</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Betting Card -->
+                <div class="ecosystem-card betting-card">
+                    <div class="ecosystem-card-header">
+                        <div class="ecosystem-icon betting-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
+                                <polyline points="7.5 19.79 7.5 14.6 3 12"/>
+                                <polyline points="21 12 16.5 14.6 16.5 19.79"/>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                        </div>
+                        <span class="coming-soon-badge">Coming Soon</span>
+                    </div>
+                    <h4 class="ecosystem-card-title">BRB Betting</h4>
+                    <p class="ecosystem-card-description">
+                        Decentralized prediction markets and betting platform. Use $BRB to participate in
+                        sports betting, event predictions, and community-driven wagers.
+                    </p>
+                    <div class="ecosystem-features">
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Decentralized predictions</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Sports & events betting</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Community wagers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More Coming Card -->
+                <div class="ecosystem-card more-card">
+                    <div class="ecosystem-card-header">
+                        <div class="ecosystem-icon more-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="16"/>
+                                <line x1="8" y1="12" x2="16" y2="12"/>
+                            </svg>
+                        </div>
+                        <span class="coming-soon-badge">In Development</span>
+                    </div>
+                    <h4 class="ecosystem-card-title">And Much More...</h4>
+                    <p class="ecosystem-card-description">
+                        The Brabo ecosystem is constantly evolving. We're developing additional DeFi products,
+                        NFT utilities, governance features, and innovative integrations to maximize $BRB value.
+                    </p>
+                    <div class="ecosystem-features">
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>NFT marketplace</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>DAO governance</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>Cross-chain bridges</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="portfolio-section ecosystem-cta">
+            <div class="cta-content">
+                <h3 class="cta-title">Be Part of the Evolution</h3>
+                <p class="cta-text">
+                    Fund with ETH now to secure your position in the Brabo ecosystem.
+                    Early $BRB holders will receive exclusive benefits and early access to all upcoming features.
+                </p>
+                <a href="index.html" class="cta-button">
+                    <span>Start Funding Now</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Selection Modal -->
+    <div class="wallet-modal-overlay" id="walletModalOverlay">
+        <div class="wallet-modal">
+            <div class="wallet-modal-header">
+                <h3>Connect Wallet</h3>
+                <button class="wallet-modal-close" id="walletModalClose">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="wallet-modal-body">
+                <p class="wallet-modal-subtitle">Choose your preferred wallet to connect</p>
+                <div class="wallet-options">
+                    <button class="wallet-option" data-wallet="metamask">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" class="wallet-icon-img">
+                        <span class="wallet-name">MetaMask</span>
+                        <span class="wallet-badge recommended">Popular</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="phantom">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="108" height="108" rx="26" fill="#AB9FF2"></rect>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M46.5267 69.9229C42.0054 76.8509 34.4292 85.6182 24.348 85.6182C19.5824 85.6182 15 83.6563 15 75.1342C15 53.4305 44.6326 19.8327 72.1268 19.8327C87.768 19.8327 94 30.6846 94 43.0079C94 58.8258 83.7355 76.9122 73.5321 76.9122C70.2939 76.9122 68.7053 75.1342 68.7053 72.314C68.7053 71.5783 68.8275 70.7812 69.0719 69.9229C65.5893 75.8699 58.8685 81.3878 52.5754 81.3878C47.993 81.3878 45.6713 78.5063 45.6713 74.4598C45.6713 72.9884 45.9768 71.4556 46.5267 69.9229ZM83.6761 42.5794C83.6761 46.1704 81.5575 47.9658 79.1875 47.9658C76.7816 47.9658 74.6989 46.1704 74.6989 42.5794C74.6989 38.9885 76.7816 37.1931 79.1875 37.1931C81.5575 37.1931 83.6761 38.9885 83.6761 42.5794ZM70.2103 42.5795C70.2103 46.1704 68.0916 47.9658 65.7216 47.9658C63.3157 47.9658 61.233 46.1704 61.233 42.5795C61.233 38.9885 63.3157 37.1931 65.7216 37.1931C68.0916 37.1931 70.2103 38.9885 70.2103 42.5795Z" fill="#FFFDF8"></path>
+                        </svg>
+                        <span class="wallet-name">Phantom</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="coinbase">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="1024" height="1024" rx="512" fill="#0052FF"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M512 768C653.856 768 768 653.856 768 512C768 370.144 653.856 256 512 256C370.144 256 256 370.144 256 512C256 653.856 370.144 768 512 768ZM512 704C618.039 704 704 618.039 704 512C704 405.961 618.039 320 512 320C405.961 320 320 405.961 320 512C320 618.039 405.961 704 512 704Z" fill="white"/>
+                            <path d="M432 472C432 449.909 449.909 432 472 432H552C574.091 432 592 449.909 592 472V552C592 574.091 574.091 592 552 592H472C449.909 592 432 574.091 432 552V472Z" fill="white"/>
+                        </svg>
+                        <span class="wallet-name">Coinbase Wallet</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="walletconnect">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 300 185" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M61.439 36.256c48.91-47.888 128.212-47.888 177.123 0l5.886 5.764a6.041 6.041 0 0 1 0 8.67l-20.136 19.716a3.179 3.179 0 0 1-4.428 0l-8.101-7.931c-34.122-33.408-89.444-33.408-123.566 0l-8.675 8.494a3.179 3.179 0 0 1-4.428 0L54.978 51.253a6.041 6.041 0 0 1 0-8.67l6.46-6.327ZM280.206 77.03l17.922 17.547a6.041 6.041 0 0 1 0 8.67l-80.81 79.122c-2.446 2.394-6.41 2.394-8.856 0l-57.354-56.155a1.59 1.59 0 0 0-2.214 0L91.54 182.37c-2.446 2.394-6.411 2.394-8.857 0L1.872 103.247a6.041 6.041 0 0 1 0-8.671l17.922-17.547c2.445-2.394 6.41-2.394 8.856 0l57.355 56.155a1.59 1.59 0 0 0 2.214 0L145.57 77.03c2.446-2.394 6.41-2.395 8.856 0l57.355 56.155a1.59 1.59 0 0 0 2.214 0L271.35 77.03c2.446-2.394 6.41-2.394 8.856 0Z" fill="#3B99FC"/></svg>
+                        <span class="wallet-name">WalletConnect</span>
+                        <span class="wallet-badge">Mobile</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="injected">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span class="wallet-name">Browser Wallet</span>
+                        <span class="wallet-badge">Other</span>
+                    </button>
+                </div>
+                <p class="wallet-modal-footer">
+                    By connecting a wallet, you agree to Brabo Markets Terms of Service
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading...</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="toast-message" id="toastMessage"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>

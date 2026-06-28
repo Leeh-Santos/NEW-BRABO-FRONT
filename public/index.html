@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brabo Fund - DeFi Funding Platform</title>
+    <link rel="icon" type="image/png" href="ChatGPT Image 3 de jun. de 2025, 12_02_10.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="background.css">
+</head>
+<body>
+    <!-- Background Image -->
+    <div class="bg-image-wrapper"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="ChatGPT Image 3 de jun. de 2025, 12_02_10.png" alt="PICA Logo" class="logo">
+                <div class="brand-info">
+                    <span class="brand-name">BRABO MARKETS</span>
+                    <span class="brand-tagline">Brabo DeFi Protocol</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="network-indicator">
+                    <span class="network-status-dot"></span>
+                    <span class="network-name">Base Network</span>
+                </div>
+                <div class="wallet-container">
+                    <button class="connect-wallet-btn" id="connectWalletBtn">
+                        <span class="wallet-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="6" width="18" height="13" rx="2" ry="2"/>
+                                <path d="M3 10h18"/>
+                                <path d="M7 15h.01"/>
+                                <path d="M11 15h.01"/>
+                            </svg>
+                        </span>
+                        <span class="wallet-text">Connect Wallet</span>
+                        <span class="wallet-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="wallet-dropdown" id="walletDropdown">
+                        <div class="dropdown-item" id="disconnectBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            <span>Disconnect</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Navigation Tabs -->
+    <div class="page-nav">
+        <div class="page-nav-container">
+            <a href="index.html" class="page-nav-tab active">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>Fund</span>
+            </a>
+            <a href="portfolio.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>My Portfolio</span>
+            </a>
+            <a href="liquidity.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span>Liquidity</span>
+            </a>
+            <a href="ecosystem.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6M5.6 5.6l4.2 4.2m4.4 4.4l4.2 4.2M1 12h6m6 0h6M5.6 18.4l4.2-4.2m4.4-4.4l4.2-4.2"/>
+                </svg>
+                <span>Ecosystem</span>
+            </a>
+            <a href="contracts.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <span>Contracts</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Fund with ETH, Earn $BRB</h1>
+            <p class="hero-subtitle">Build liquidity together, watch it grow exponentially.</p>
+
+            <!-- Key Features -->
+            
+
+            <!-- Fund Allocation -->
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                        <span style="font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">80%</span>
+                    </div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary); font-weight: 500;">Liquidity Addition to BRB/ETH Pool</div>
+                </div>
+                <div style="width: 1px; background: var(--border-color); align-self: stretch;"></div>
+                <div style="text-align: center;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                            <polyline points="17 6 23 6 23 12"/>
+                        </svg>
+                        <span style="font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #10b981 0%, #059669 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">20%</span>
+                    </div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary); font-weight: 500;">BRB Buyback From BRB/ETH Pool</div>
+                    
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card stat-card-eth">
+                <div class="stat-icon-wrapper">
+                    <svg class="stat-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Total ETH Funded</div>
+                    <div class="stat-value-group">
+                        <div class="stat-value" id="totalEthFunded">0.00</div>
+                        <div class="stat-unit">ETH</div>
+                    </div>
+                    <div class="stat-price-usd" id="totalEthFundedUsd">$0.00</div>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card-users">
+                <div class="stat-icon-wrapper">
+                    <svg class="stat-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Total Funders</div>
+                    <div class="stat-value-group">
+                        <div class="stat-value" id="totalFunders">0</div>
+                        <div class="stat-unit">users</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card-marketcap">
+                <div class="stat-icon-wrapper">
+                    <svg class="stat-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                        <polyline points="17 6 23 6 23 12"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">$BRB Market Cap</div>
+                    <div class="stat-value-group">
+                        <div class="stat-value" id="brbMarketCap">$0.00</div>
+                        <div class="stat-unit">USD</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card-supply">
+                <div class="stat-icon-wrapper">
+                    <svg class="stat-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Total $BRB in Contract</div>
+                    <div class="stat-value-group">
+                        <div class="stat-value" id="totalPicaInContract">0.00</div>
+                        <div class="stat-unit">$BRB</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card-price">
+                <div class="stat-icon-wrapper">
+                    <svg class="stat-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Current $BRB Price</div>
+                    <div class="stat-value-group">
+                        <div class="stat-value" id="picaPriceUsd">$0.0000</div>
+                        <div class="stat-unit">USD</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card stat-card-tier">
+                <div class="stat-icon-wrapper">
+                    <svg class="stat-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Your Tier</div>
+                    <div class="stat-value-group">
+                        <div class="stat-value" id="userTier">--</div>
+                    </div>
+                    <div class="stat-tier-bonus" id="tierBonus">No NFT</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Funding Card -->
+        <div class="funding-card">
+            <div class="card-header">
+                <h2 class="card-title">Buy $BRB with ETH</h2>
+                <div class="network-badge">
+                    <span class="network-dot"></span>
+                    Base Network
+                </div>
+            </div>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <label class="input-label">You Send</label>
+                <div class="input-wrapper">
+                    <input
+                        type="number"
+                        class="eth-input"
+                        id="ethInput"
+                        placeholder="0.0"
+                        step="0.01"
+                        min="0"
+                    >
+                    <div class="input-currency">
+                        <span class="currency-icon">⟠</span>
+                        <span>ETH</span>
+                    </div>
+                </div>
+                <div class="input-usd-value" id="ethInputUsd">$0.00 USD</div>
+                <div class="input-helper">
+                    Minimum: $0.20 USD worth of ETH (contract enforced)
+                </div>
+            </div>
+
+            <!-- Breakdown Section -->
+            <div class="breakdown-section" id="breakdownSection">
+                <div class="breakdown-header">
+                    <h3 class="breakdown-title">Transaction Breakdown</h3>
+                    <button class="refresh-btn" id="refreshQuote">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="allocation-grid">
+                    <div class="allocation-item">
+                        <div class="allocation-header">
+                            <span class="allocation-label">Buyback (20%)</span>
+                            <span class="allocation-percentage">20%</span>
+                        </div>
+                        <div class="allocation-value" id="buybackAmount">0.00 ETH</div>
+                        <div class="allocation-result">
+                            <span class="result-label">$BRB from swap:</span>
+                            <span class="result-value" id="buybackPica">0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="allocation-item">
+                        <div class="allocation-header">
+                            <span class="allocation-label">Batch Allocation (80%)</span>
+                            <span class="allocation-percentage">80%</span>
+                        </div>
+                        <div class="allocation-value" id="batchAmount">0.00 ETH</div>
+                        <div class="allocation-result">
+                            <span class="result-label">$BRB compensation:</span>
+                            <span class="result-value" id="compensationPica">0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="allocation-item bonus-item" id="bonusSection">
+                        <div class="allocation-header">
+                            <span class="allocation-label">NFT Tier Bonus</span>
+                            <span class="allocation-percentage" id="bonusPercentage">0%</span>
+                        </div>
+                        <div class="allocation-value" id="tierName">--</div>
+                        <div class="allocation-result">
+                            <span class="result-label">Bonus $BRB:</span>
+                            <span class="result-value" id="bonusPica">0.00</span>
+                        </div>
+                    </div>
+
+                 
+                </div>
+
+                <div class="total-section">
+                    <div class="total-row">
+                        <span class="total-label">You Will Receive</span>
+                        <div class="total-value-container">
+                            <span class="total-value" id="totalPica">0.00</span>
+                            <span class="total-currency">$BRB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="breakdown-notice">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 16v-4M12 8h.01"/>
+                    </svg>
+                    <div class="notice-content">
+                        <strong>Important Notice:</strong> Due to low liquidity in the pool, the actual amount of $BRB you receive may differ slightly from the estimate shown. NFT holders will be compensated for any discrepancies in future Brabo Ecosystem Dapps or interactions.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button class="fund-btn" id="fundBtn" disabled>
+                <span class="btn-text">Enter Amount</span>
+                <span class="btn-arrow">→</span>
+            </button>
+
+            <!-- NFT Tier Progression -->
+            <div class="tier-progression-section">
+                <div class="tier-progression-header">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <h4>NFT Tier Progression</h4>
+                </div>
+                <div class="tier-track">
+                    <div class="tier-milestone" data-tier="bronze">
+                        <div class="milestone-marker bronze-marker">
+                            <img src="bronze.svg" alt="Bronze Tier" class="milestone-icon-svg">
+                        </div>
+                        <div class="milestone-info">
+                            <div class="milestone-tier">Bronze</div>
+                            <div class="milestone-amount">$5.00 USD</div>
+                            <div class="milestone-bonus">+2% Bonus</div>
+                        </div>
+                    </div>
+                    <div class="tier-connector tier-connector-bronze-silver"></div>
+                    <div class="tier-milestone" data-tier="silver">
+                        <div class="milestone-marker silver-marker">
+                            <img src="silver.svg" alt="Silver Tier" class="milestone-icon-svg">
+                        </div>
+                        <div class="milestone-info">
+                            <div class="milestone-tier">Silver</div>
+                            <div class="milestone-amount">$50.00 USD</div>
+                            <div class="milestone-bonus">+5% Bonus</div>
+                        </div>
+                    </div>
+                    <div class="tier-connector tier-connector-silver-gold"></div>
+                    <div class="tier-milestone" data-tier="gold">
+                        <div class="milestone-marker gold-marker">
+                            <img src="gold.svg" alt="Gold Tier" class="milestone-icon-svg">
+                        </div>
+                        <div class="milestone-info">
+                            <div class="milestone-tier">Gold</div>
+                            <div class="milestone-amount">$100.00 USD</div>
+                            <div class="milestone-bonus">+10% Bonus</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="info-section">
+                <div class="info-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <span>80% buyback + 20% liquidity allocation on every fund</span>
+                </div>
+                <div class="info-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 16v-4M12 8h.01"/>
+                    </svg>
+                    <span>Tier bonuses apply to all $BRB rewards received</span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- How It Works Section -->
+        <div class="how-it-works">
+            <h3 class="section-title">How It Works</h3>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4 class="step-title">Connect Wallet</h4>
+                    <p class="step-description">Connect your Web3 wallet to get started</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4 class="step-title">Fund with ETH</h4>
+                    <p class="step-description">20% goes to Liquidity Pool buyback, 80% to liquidity</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4 class="step-title">Receive $BRB</h4>
+                    <p class="step-description">Get $BRB tokens instantly with bonus rewards</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4 class="step-title">Earn NFT Tiers</h4>
+                    <p class="step-description">Unlock Bronze, Silver, and Gold tier bonuses</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Wallet Selection Modal -->
+    <div class="wallet-modal-overlay" id="walletModalOverlay">
+        <div class="wallet-modal">
+            <div class="wallet-modal-header">
+                <h3>Connect Wallet</h3>
+                <button class="wallet-modal-close" id="walletModalClose">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="wallet-modal-body">
+                <p class="wallet-modal-subtitle">Choose your preferred wallet to connect</p>
+                <div class="wallet-options">
+                    <button class="wallet-option" data-wallet="metamask">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" class="wallet-icon-img">
+                        <span class="wallet-name">MetaMask</span>
+                        <span class="wallet-badge recommended">Popular</span>
+                    </button>
+                
+                    <button class="wallet-option" data-wallet="phantom">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="108" height="108" rx="26" fill="#AB9FF2"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M46.5267 69.9229C42.0054 76.8509 34.4292 85.6182 24.348 85.6182C19.5824 85.6182 15 83.6563 15 75.1342C15 53.4305 44.6326 19.8327 72.1268 19.8327C87.768 19.8327 94 30.6846 94 43.0079C94 58.8258 83.7355 76.9122 73.5321 76.9122C70.2939 76.9122 68.7053 75.1342 68.7053 72.314C68.7053 71.5783 68.8275 70.7812 69.0719 69.9229C65.5893 75.8699 58.8685 81.3878 52.5754 81.3878C47.993 81.3878 45.6713 78.5063 45.6713 74.4598C45.6713 72.9884 45.9768 71.4556 46.5267 69.9229ZM83.6761 42.5794C83.6761 46.1704 81.5575 47.9658 79.1875 47.9658C76.7816 47.9658 74.6989 46.1704 74.6989 42.5794C74.6989 38.9885 76.7816 37.1931 79.1875 37.1931C81.5575 37.1931 83.6761 38.9885 83.6761 42.5794ZM70.2103 42.5795C70.2103 46.1704 68.0916 47.9658 65.7216 47.9658C63.3157 47.9658 61.233 46.1704 61.233 42.5795C61.233 38.9885 63.3157 37.1931 65.7216 37.1931C68.0916 37.1931 70.2103 38.9885 70.2103 42.5795Z" fill="#FFFDF8"/>
+                        </svg>
+                        <span class="wallet-name">Phantom</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="coinbase">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="1024" height="1024" rx="512" fill="#0052FF"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M512 768C653.856 768 768 653.856 768 512C768 370.144 653.856 256 512 256C370.144 256 256 370.144 256 512C256 653.856 370.144 768 512 768ZM512 704C618.039 704 704 618.039 704 512C704 405.961 618.039 320 512 320C405.961 320 320 405.961 320 512C320 618.039 405.961 704 512 704Z" fill="white"/>
+                            <path d="M432 472C432 449.909 449.909 432 472 432H552C574.091 432 592 449.909 592 472V552C592 574.091 574.091 592 552 592H472C449.909 592 432 574.091 432 552V472Z" fill="white"/>
+                        </svg>
+                        <span class="wallet-name">Coinbase Wallet</span>
+                    </button>
+<button class="wallet-option" data-wallet="walletconnect">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 300 185" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M61.439 36.256c48.91-47.888 128.212-47.888 177.123 0l5.886 5.764a6.041 6.041 0 0 1 0 8.67l-20.136 19.716a3.179 3.179 0 0 1-4.428 0l-8.101-7.931c-34.122-33.408-89.444-33.408-123.566 0l-8.675 8.494a3.179 3.179 0 0 1-4.428 0L54.978 51.253a6.041 6.041 0 0 1 0-8.67l6.46-6.327ZM280.206 77.03l17.922 17.547a6.041 6.041 0 0 1 0 8.67l-80.81 79.122c-2.446 2.394-6.41 2.394-8.856 0l-57.354-56.155a1.59 1.59 0 0 0-2.214 0L91.54 182.37c-2.446 2.394-6.411 2.394-8.857 0L1.872 103.247a6.041 6.041 0 0 1 0-8.671l17.922-17.547c2.445-2.394 6.41-2.394 8.856 0l57.355 56.155a1.59 1.59 0 0 0 2.214 0L145.57 77.03c2.446-2.394 6.41-2.395 8.856 0l57.355 56.155a1.59 1.59 0 0 0 2.214 0L271.35 77.03c2.446-2.394 6.41-2.394 8.856 0Z" fill="#3B99FC"/>
+                        </svg>
+                        <span class="wallet-name">WalletConnect</span>
+                        <span class="wallet-badge">Mobile</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="injected">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span class="wallet-name">Browser Wallet</span>
+                        <span class="wallet-badge">Other</span>
+                    </button>
+                </div>
+                <p class="wallet-modal-footer">
+                    By connecting a wallet, you agree to Brabo Markets Terms of Service
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Processing transaction...</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="toast-message" id="toastMessage"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>

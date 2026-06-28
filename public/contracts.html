@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Contracts - Brabo Fund</title>
+    <link rel="icon" type="image/png" href="ChatGPT Image 3 de jun. de 2025, 12_02_10.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="ChatGPT Image 3 de jun. de 2025, 12_02_10.png" alt="PICA Logo" class="logo">
+                <div class="brand-info">
+                    <span class="brand-name">BRABO MARKETS</span>
+                    <span class="brand-tagline">Brabo DeFi Protocol</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="network-indicator">
+                    <span class="network-status-dot"></span>
+                    <span class="network-name">Base Network</span>
+                </div>
+                <div class="wallet-container">
+                    <button class="connect-wallet-btn" id="connectWalletBtn">
+                        <span class="wallet-icon"></span>
+                        <span class="wallet-text">Connect Wallet</span>
+                    </button>
+                    <div class="wallet-dropdown" id="walletDropdown">
+                        <div class="dropdown-item" id="disconnectBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            <span>Disconnect</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Navigation Tabs -->
+    <div class="page-nav">
+        <div class="page-nav-container">
+            <a href="index.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>Fund</span>
+            </a>
+            <a href="portfolio.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>My Portfolio</span>
+            </a>
+            <a href="liquidity.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span>Liquidity</span>
+            </a>
+            <a href="ecosystem.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6M5.6 5.6l4.2 4.2m4.4 4.4l4.2 4.2M1 12h6m6 0h6M5.6 18.4l4.2-4.2m4.4-4.4l4.2-4.2"/>
+                </svg>
+                <span>Ecosystem</span>
+            </a>
+            <a href="contracts.html" class="page-nav-tab active">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <span>Contracts</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Smart Contracts</h1>
+            <p class="hero-subtitle">Verified and transparent - All contracts are open source on BaseScan</p>
+        </div>
+
+        <!-- Transparency Notice -->
+        <div class="portfolio-section contracts-intro">
+            <div class="contracts-intro-content">
+                <div class="transparency-badge">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                    <span>100% Verified & Audited</span>
+                </div>
+                <h2 class="contracts-intro-title">Full Transparency</h2>
+                <p class="contracts-intro-text">
+                    All Brabo Markets smart contracts are verified on BaseScan and fully open source.
+                    You can view the source code, verify the contract logic, and interact directly with the contracts.
+                    Our commitment to transparency ensures you can trust the protocol.
+                </p>
+            </div>
+        </div>
+
+        <!-- Contracts List -->
+        <div class="portfolio-section">
+            <h3 class="portfolio-section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="9" y1="9" x2="15" y2="9"/>
+                    <line x1="9" y1="15" x2="15" y2="15"/>
+                </svg>
+                Deployed Contracts
+            </h3>
+
+            <div class="contracts-grid">
+                <!-- Fund Contract -->
+                <div class="contract-card">
+                    <div class="contract-header">
+                        <div class="contract-icon fund-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                <polyline points="9 22 9 12 15 12 15 22"/>
+                            </svg>
+                        </div>
+                        <div class="contract-status">
+                            <span class="status-badge verified">✓ Verified</span>
+                        </div>
+                    </div>
+
+                    <h4 class="contract-name">Brabo Fund Contract</h4>
+                    <p class="contract-description">
+                        Main funding contract. Handles ETH deposits, BRB token distribution, buyback mechanism, and liquidity provision.
+                    </p>
+
+                    <div class="contract-address-section">
+                        <div class="address-label">Contract Address</div>
+                        <div class="address-display">
+                            <code class="contract-address" id="fundAddress">0x010996547d68dA484b4FeBCC337A97d48b3Af8D7</code>
+                            <button class="copy-btn" onclick="copyAddress('fundAddress')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="contract-actions">
+                        <a href="https://basescan.org/address/0x010996547d68dA484b4FeBCC337A97d48b3Af8D7" target="_blank" class="contract-link primary">
+                            <span>View on BaseScan</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                <polyline points="15 3 21 3 21 9"/>
+                                <line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- NFT Contract -->
+                <div class="contract-card">
+                    <div class="contract-header">
+                        <div class="contract-icon nft-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <div class="contract-status">
+                            <span class="status-badge verified">✓ Verified</span>
+                        </div>
+                    </div>
+
+                    <h4 class="contract-name">Brabo Funder NFT</h4>
+                    <p class="contract-description">
+                        ERC-721 NFT contract. Mints tier-based NFTs (Bronze, Silver, Gold) that provide bonus rewards based on funding amount.
+                    </p>
+
+                    <div class="contract-address-section">
+                        <div class="address-label">Contract Address</div>
+                        <div class="address-display">
+                            <code class="contract-address" id="nftAddress">0x680cc2149bc0E7A4Aa83f462F28aee1639C1355a</code>
+                            <button class="copy-btn" onclick="copyAddress('nftAddress')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="contract-actions">
+                        <a href="https://basescan.org/address/0x680cc2149bc0E7A4Aa83f462F28aee1639C1355a" target="_blank" class="contract-link primary">
+                            <span>View on BaseScan</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                <polyline points="15 3 21 3 21 9"/>
+                                <line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Token Contract -->
+                <div class="contract-card">
+                    <div class="contract-header">
+                        <div class="contract-icon token-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <div class="contract-status">
+                            <span class="status-badge verified">✓ Verified</span>
+                        </div>
+                    </div>
+
+                    <h4 class="contract-name">$BRB Token</h4>
+                    <p class="contract-description">
+                        ERC-20 token contract. The native Brabo Markets token distributed to funders through the buyback mechanism.
+                    </p>
+
+                    <div class="contract-address-section">
+                        <div class="address-label">Contract Address</div>
+                        <div class="address-display">
+                            <code class="contract-address" id="tokenAddress">0x07f6A4932e8be5Be7a0aC1bfCAB5EF6b95B0b1a2</code>
+                            <button class="copy-btn" onclick="copyAddress('tokenAddress')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="contract-actions">
+                        <a href="https://basescan.org/token/0x07f6A4932e8be5Be7a0aC1bfCAB5EF6b95B0b1a2" target="_blank" class="contract-link primary">
+                            <span>View on BaseScan</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                <polyline points="15 3 21 3 21 9"/>
+                                <line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="portfolio-section security-notice">
+            <div class="security-content">
+                <div class="security-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <h3 class="security-title">Security & Trust</h3>
+                <p class="security-text">
+                    All contracts have been deployed on Base Network and are fully verified on BaseScan.
+                    The code is open source and auditable by anyone. Always verify contract addresses before interacting.
+                </p>
+                <div class="security-tips">
+                    <div class="security-tip">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Verified on BaseScan</span>
+                    </div>
+                    <div class="security-tip">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Open source code</span>
+                    </div>
+                    <div class="security-tip">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Immutable on Base</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Selection Modal -->
+    <div class="wallet-modal-overlay" id="walletModalOverlay">
+        <div class="wallet-modal">
+            <div class="wallet-modal-header">
+                <h3>Connect Wallet</h3>
+                <button class="wallet-modal-close" id="walletModalClose">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="wallet-modal-body">
+                <p class="wallet-modal-subtitle">Choose your preferred wallet to connect</p>
+                <div class="wallet-options">
+                    <button class="wallet-option" data-wallet="metamask">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" class="wallet-icon-img">
+                        <span class="wallet-name">MetaMask</span>
+                        <span class="wallet-badge recommended">Popular</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="phantom">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="108" height="108" rx="26" fill="#AB9FF2"></rect>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M46.5267 69.9229C42.0054 76.8509 34.4292 85.6182 24.348 85.6182C19.5824 85.6182 15 83.6563 15 75.1342C15 53.4305 44.6326 19.8327 72.1268 19.8327C87.768 19.8327 94 30.6846 94 43.0079C94 58.8258 83.7355 76.9122 73.5321 76.9122C70.2939 76.9122 68.7053 75.1342 68.7053 72.314C68.7053 71.5783 68.8275 70.7812 69.0719 69.9229C65.5893 75.8699 58.8685 81.3878 52.5754 81.3878C47.993 81.3878 45.6713 78.5063 45.6713 74.4598C45.6713 72.9884 45.9768 71.4556 46.5267 69.9229ZM83.6761 42.5794C83.6761 46.1704 81.5575 47.9658 79.1875 47.9658C76.7816 47.9658 74.6989 46.1704 74.6989 42.5794C74.6989 38.9885 76.7816 37.1931 79.1875 37.1931C81.5575 37.1931 83.6761 38.9885 83.6761 42.5794ZM70.2103 42.5795C70.2103 46.1704 68.0916 47.9658 65.7216 47.9658C63.3157 47.9658 61.233 46.1704 61.233 42.5795C61.233 38.9885 63.3157 37.1931 65.7216 37.1931C68.0916 37.1931 70.2103 38.9885 70.2103 42.5795Z" fill="#FFFDF8"></path>
+                        </svg>
+                        <span class="wallet-name">Phantom</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="coinbase">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="1024" height="1024" rx="512" fill="#0052FF"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M512 768C653.856 768 768 653.856 768 512C768 370.144 653.856 256 512 256C370.144 256 256 370.144 256 512C256 653.856 370.144 768 512 768ZM512 704C618.039 704 704 618.039 704 512C704 405.961 618.039 320 512 320C405.961 320 320 405.961 320 512C320 618.039 405.961 704 512 704Z" fill="white"/>
+                            <path d="M432 472C432 449.909 449.909 432 472 432H552C574.091 432 592 449.909 592 472V552C592 574.091 574.091 592 552 592H472C449.909 592 432 574.091 432 552V472Z" fill="white"/>
+                        </svg>
+                        <span class="wallet-name">Coinbase Wallet</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="walletconnect">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 300 185" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M61.439 36.256c48.91-47.888 128.212-47.888 177.123 0l5.886 5.764a6.041 6.041 0 0 1 0 8.67l-20.136 19.716a3.179 3.179 0 0 1-4.428 0l-8.101-7.931c-34.122-33.408-89.444-33.408-123.566 0l-8.675 8.494a3.179 3.179 0 0 1-4.428 0L54.978 51.253a6.041 6.041 0 0 1 0-8.67l6.46-6.327ZM280.206 77.03l17.922 17.547a6.041 6.041 0 0 1 0 8.67l-80.81 79.122c-2.446 2.394-6.41 2.394-8.856 0l-57.354-56.155a1.59 1.59 0 0 0-2.214 0L91.54 182.37c-2.446 2.394-6.411 2.394-8.857 0L1.872 103.247a6.041 6.041 0 0 1 0-8.671l17.922-17.547c2.445-2.394 6.41-2.394 8.856 0l57.355 56.155a1.59 1.59 0 0 0 2.214 0L145.57 77.03c2.446-2.394 6.41-2.395 8.856 0l57.355 56.155a1.59 1.59 0 0 0 2.214 0L271.35 77.03c2.446-2.394 6.41-2.394 8.856 0Z" fill="#3B99FC"/></svg>
+                        <span class="wallet-name">WalletConnect</span>
+                        <span class="wallet-badge">Mobile</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="injected">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span class="wallet-name">Browser Wallet</span>
+                        <span class="wallet-badge">Other</span>
+                    </button>
+                </div>
+                <p class="wallet-modal-footer">
+                    By connecting a wallet, you agree to Brabo Markets Terms of Service
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="toast-message" id="toastMessage"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="script.js"></script>
+    <script>
+        // Copy address to clipboard
+        function copyAddress(elementId) {
+            const addressElement = document.getElementById(elementId);
+            const address = addressElement.textContent;
+
+            navigator.clipboard.writeText(address).then(() => {
+                // Show toast notification
+                const toast = document.getElementById('toast');
+                const toastMessage = document.getElementById('toastMessage');
+                toastMessage.textContent = 'Address copied to clipboard!';
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+    </script>
+</body>
+</html>

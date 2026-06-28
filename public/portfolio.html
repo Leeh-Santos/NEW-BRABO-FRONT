@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio - Brabo Fund</title>
+    <link rel="icon" type="image/png" href="ChatGPT Image 3 de jun. de 2025, 12_02_10.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="ChatGPT Image 3 de jun. de 2025, 12_02_10.png" alt="PICA Logo" class="logo">
+                <div class="brand-info">
+                    <span class="brand-name">BRABO MARKETS</span>
+                    <span class="brand-tagline">Brabo DeFi Protocol</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="network-indicator">
+                    <span class="network-status-dot"></span>
+                    <span class="network-name">Base Network</span>
+                </div>
+                <div class="wallet-container">
+                    <button class="connect-wallet-btn" id="connectWalletBtn">
+                        <span class="wallet-icon"></span>
+                        <span class="wallet-text">Connect Wallet</span>
+                    </button>
+                    <div class="wallet-dropdown" id="walletDropdown">
+                        <div class="dropdown-item" id="disconnectBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            <span>Disconnect</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Navigation Tabs -->
+    <div class="page-nav">
+        <div class="page-nav-container">
+            <a href="index.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>Fund</span>
+            </a>
+            <a href="portfolio.html" class="page-nav-tab active">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>My Portfolio</span>
+            </a>
+            <a href="liquidity.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span>Liquidity</span>
+            </a>
+            <a href="ecosystem.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6M5.6 5.6l4.2 4.2m4.4 4.4l4.2 4.2M1 12h6m6 0h6M5.6 18.4l4.2-4.2m4.4-4.4l4.2-4.2"/>
+                </svg>
+                <span>Ecosystem</span>
+            </a>
+            <a href="contracts.html" class="page-nav-tab">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <span>Contracts</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Portfolio Hero -->
+        <div class="hero-section">
+            <h1 class="hero-title">My Portfolio</h1>
+            <p class="hero-subtitle">Track your funding history, NFT status, and tier progression</p>
+        </div>
+
+        <!-- Connect Wallet Prompt (shown when not connected) -->
+        <div class="connect-prompt" id="connectPrompt">
+            <div class="connect-prompt-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="2" y="6" width="20" height="12" rx="2"/>
+                    <path d="M22 10H18a2 2 0 0 0 0 4h4"/>
+                    <circle cx="18" cy="12" r="1"/>
+                </svg>
+            </div>
+            <h3>Connect Your Wallet</h3>
+            <p>Connect your wallet to view your portfolio, NFT status, and funding history.</p>
+            <button class="connect-wallet-btn" id="connectPromptBtn">
+                <span class="wallet-icon"></span>
+                <span>Connect Wallet</span>
+            </button>
+        </div>
+
+        <!-- Portfolio Content (shown when connected) -->
+        <div class="portfolio-content" id="portfolioContent" style="display: none;">
+
+            <!-- Position Overview -->
+            <div class="portfolio-section">
+                <h3 class="portfolio-section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    Position Overview
+                </h3>
+                <div class="position-grid portfolio-stats-grid">
+                    <div class="position-item">
+                        <div class="position-label">Total ETH Funded</div>
+                        <div class="position-value" id="portfolioEthFunded">0.00 ETH</div>
+                    </div>
+                    <div class="position-item">
+                        <div class="position-label">Total funded USD Value </div>
+                        <div class="position-value" id="portfolioUsdFunded">$0.00</div>
+                    </div>
+                    <div class="position-item">
+                        <div class="position-label">$BRB Balance</div>
+                        <div class="position-value" id="portfolioBrbReceived">0.00 $BRB</div>
+                    </div>
+                    <div class="position-item">
+                        <div class="position-label">Current $BRB Value</div>
+                        <div class="position-value" id="portfolioBrbValue">$0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NFT Display Section -->
+            <div class="portfolio-section nft-section">
+                <h3 class="portfolio-section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    Your NFT
+                </h3>
+
+                <div class="nft-display-container">
+                    <!-- No NFT State -->
+                    <div class="nft-empty-state" id="nftEmptyState">
+                        <div class="nft-placeholder">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <path d="M21 15l-5-5L5 21"/>
+                            </svg>
+                        </div>
+                        <h4>No NFT Yet</h4>
+                        <p>Fund at least $5 USD worth of ETH to mint your Bronze tier NFT</p>
+                        <a href="index.html" class="nft-cta-btn">
+                            <span>Start Funding</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- NFT Card (shown when user has NFT) -->
+                    <div class="nft-card" id="nftCard" style="display: none;">
+                        <div class="nft-image-container" id="nftImageContainer">
+                            <img src="" alt="Your NFT" class="nft-image" id="nftImage">
+                            <div class="nft-tier-badge" id="nftTierBadge">Bronze</div>
+                        </div>
+                        <div class="nft-details">
+                            <div class="nft-title">Brabo Funder NFT</div>
+                            <div class="nft-token-id" id="nftTokenId">Token #0</div>
+                            <div class="nft-attributes">
+                                <div class="nft-attribute">
+                                    <span class="attribute-label">Tier</span>
+                                    <span class="attribute-value" id="nftTier">Bronze</span>
+                                </div>
+                                <div class="nft-attribute">
+                                    <span class="attribute-label">Bonus</span>
+                                    <span class="attribute-value" id="nftBonus">+2%</span>
+                                </div>
+                                <div class="nft-attribute">
+                                    <span class="attribute-label">Status</span>
+                                    <span class="attribute-value attribute-active">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier Progression -->
+            <div class="portfolio-section">
+                <h3 class="portfolio-section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    Tier Progression
+                </h3>
+
+                <div class="tier-progress-card">
+                    <div class="tier-progress-header">
+                        <div class="current-tier-info">
+                            <span class="current-tier-label">Current Tier</span>
+                            <span class="current-tier-value" id="currentTierName">No Tier</span>
+                        </div>
+                        <div class="next-tier-info">
+                            <span class="next-tier-label">Next Tier</span>
+                            <span class="next-tier-value" id="nextTierName">Bronze</span>
+                        </div>
+                    </div>
+
+                    <div class="tier-progress-bar-container">
+                        <div class="tier-progress-bar">
+                            <div class="tier-progress-fill" id="tierProgressFill" style="width: 0%"></div>
+                        </div>
+                        <div class="tier-progress-labels">
+                            <span id="currentProgressLabel">$0.00</span>
+                            <span id="nextTierThreshold">$5.00</span>
+                        </div>
+                    </div>
+
+                    <div class="tier-progress-message" id="tierProgressMessage">
+                        Fund <strong>$5.00 more</strong> to reach Bronze tier
+                    </div>
+                </div>
+
+                <!-- Tier Cards -->
+                <div class="tier-cards-grid">
+                    <div class="tier-card" id="bronzeTierCard">
+                        <div class="tier-card-icon bronze-icon">
+                            <img src="bronze.svg" alt="Bronze" class="tier-card-svg">
+                        </div>
+                        <div class="tier-card-info">
+                            <div class="tier-card-name">Bronze</div>
+                            <div class="tier-card-threshold">$5.00 USD</div>
+                            <div class="tier-card-bonus">+2% Bonus</div>
+                        </div>
+                        <div class="tier-card-status" id="bronzeStatus">
+                            <span class="status-locked">Locked</span>
+                        </div>
+                    </div>
+
+                    <div class="tier-card" id="silverTierCard">
+                        <div class="tier-card-icon silver-icon">
+                            <img src="silver.svg" alt="Silver" class="tier-card-svg">
+                        </div>
+                        <div class="tier-card-info">
+                            <div class="tier-card-name">Silver</div>
+                            <div class="tier-card-threshold">$50.00 USD</div>
+                            <div class="tier-card-bonus">+5% Bonus</div>
+                        </div>
+                        <div class="tier-card-status" id="silverStatus">
+                            <span class="status-locked">Locked</span>
+                        </div>
+                    </div>
+
+                    <div class="tier-card" id="goldTierCard">
+                        <div class="tier-card-icon gold-icon">
+                            <img src="gold.svg" alt="Gold" class="tier-card-svg">
+                        </div>
+                        <div class="tier-card-info">
+                            <div class="tier-card-name">Gold</div>
+                            <div class="tier-card-threshold">$100.00 USD</div>
+                            <div class="tier-card-bonus">+10% Bonus</div>
+                        </div>
+                        <div class="tier-card-status" id="goldStatus">
+                            <span class="status-locked">Locked</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Funding History -->
+            <div class="portfolio-section">
+                <h3 class="portfolio-section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    Activity Summary
+                </h3>
+
+                <div class="activity-summary-grid">
+                    <div class="activity-card">
+                        <div class="activity-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-label">Total Transactions</div>
+                            <div class="activity-value" id="totalTransactions">0</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="activity-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-label">First Funding</div>
+                            <div class="activity-value" id="firstFundingDate">--</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="activity-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                <polyline points="17 6 23 6 23 12"/>
+                            </svg>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-label">Bonus Earned</div>
+                            <div class="activity-value" id="totalBonusEarned">0.00 $BRB</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="portfolio-section">
+                <h3 class="portfolio-section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                    Quick Actions
+                </h3>
+
+                <div class="quick-actions-grid">
+                    <a href="index.html" class="quick-action-btn primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        <span>Fund More ETH</span>
+                    </a>
+                    <button class="quick-action-btn secondary" id="refreshPortfolioBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                        </svg>
+                        <span>Refresh Data</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Selection Modal -->
+    <div class="wallet-modal-overlay" id="walletModalOverlay">
+        <div class="wallet-modal">
+            <div class="wallet-modal-header">
+                <h3>Connect Wallet</h3>
+                <button class="wallet-modal-close" id="walletModalClose">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="wallet-modal-body">
+                <p class="wallet-modal-subtitle">Choose your preferred wallet to connect</p>
+                <div class="wallet-options">
+                    <button class="wallet-option" data-wallet="metamask">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" class="wallet-icon-img">
+                        <span class="wallet-name">MetaMask</span>
+                        <span class="wallet-badge recommended">Popular</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="phantom">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="108" height="108" rx="26" fill="#AB9FF2"></rect>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M46.5267 69.9229C42.0054 76.8509 34.4292 85.6182 24.348 85.6182C19.5824 85.6182 15 83.6563 15 75.1342C15 53.4305 44.6326 19.8327 72.1268 19.8327C87.768 19.8327 94 30.6846 94 43.0079C94 58.8258 83.7355 76.9122 73.5321 76.9122C70.2939 76.9122 68.7053 75.1342 68.7053 72.314C68.7053 71.5783 68.8275 70.7812 69.0719 69.9229C65.5893 75.8699 58.8685 81.3878 52.5754 81.3878C47.993 81.3878 45.6713 78.5063 45.6713 74.4598C45.6713 72.9884 45.9768 71.4556 46.5267 69.9229ZM83.6761 42.5794C83.6761 46.1704 81.5575 47.9658 79.1875 47.9658C76.7816 47.9658 74.6989 46.1704 74.6989 42.5794C74.6989 38.9885 76.7816 37.1931 79.1875 37.1931C81.5575 37.1931 83.6761 38.9885 83.6761 42.5794ZM70.2103 42.5795C70.2103 46.1704 68.0916 47.9658 65.7216 47.9658C63.3157 47.9658 61.233 46.1704 61.233 42.5795C61.233 38.9885 63.3157 37.1931 65.7216 37.1931C68.0916 37.1931 70.2103 38.9885 70.2103 42.5795Z" fill="#FFFDF8"></path>
+                        </svg>
+                        <span class="wallet-name">Phantom</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="coinbase">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="1024" height="1024" rx="512" fill="#0052FF"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M512 768C653.856 768 768 653.856 768 512C768 370.144 653.856 256 512 256C370.144 256 256 370.144 256 512C256 653.856 370.144 768 512 768ZM512 704C618.039 704 704 618.039 704 512C704 405.961 618.039 320 512 320C405.961 320 320 405.961 320 512C320 618.039 405.961 704 512 704Z" fill="white"/>
+                            <path d="M432 472C432 449.909 449.909 432 472 432H552C574.091 432 592 449.909 592 472V552C592 574.091 574.091 592 552 592H472C449.909 592 432 574.091 432 552V472Z" fill="white"/>
+                        </svg>
+                        <span class="wallet-name">Coinbase Wallet</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="walletconnect">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 300 185" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M61.439 36.256c48.91-47.888 128.212-47.888 177.123 0l5.886 5.764a6.041 6.041 0 0 1 0 8.67l-20.136 19.716a3.179 3.179 0 0 1-4.428 0l-8.101-7.931c-34.122-33.408-89.444-33.408-123.566 0l-8.675 8.494a3.179 3.179 0 0 1-4.428 0L54.978 51.253a6.041 6.041 0 0 1 0-8.67l6.46-6.327ZM280.206 77.03l17.922 17.547a6.041 6.041 0 0 1 0 8.67l-80.81 79.122c-2.446 2.394-6.41 2.394-8.856 0l-57.354-56.155a1.59 1.59 0 0 0-2.214 0L91.54 182.37c-2.446 2.394-6.411 2.394-8.857 0L1.872 103.247a6.041 6.041 0 0 1 0-8.671l17.922-17.547c2.445-2.394 6.41-2.394 8.856 0l57.355 56.155a1.59 1.59 0 0 0 2.214 0L145.57 77.03c2.446-2.394 6.41-2.395 8.856 0l57.355 56.155a1.59 1.59 0 0 0 2.214 0L271.35 77.03c2.446-2.394 6.41-2.394 8.856 0Z" fill="#3B99FC"/></svg>
+                        <span class="wallet-name">WalletConnect</span>
+                        <span class="wallet-badge">Mobile</span>
+                    </button>
+                    <button class="wallet-option" data-wallet="injected">
+                        <svg class="wallet-icon-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span class="wallet-name">Browser Wallet</span>
+                        <span class="wallet-badge">Other</span>
+                    </button>
+                </div>
+                <p class="wallet-modal-footer">
+                    By connecting a wallet, you agree to Brabo Markets Terms of Service
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading portfolio...</p>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="toast-message" id="toastMessage"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
