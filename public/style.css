@@ -3760,3 +3760,25 @@ body {
         font-size: 1rem;
     }
 }
+
+/* ==================== DESIGN SKILLS: TYPED.JS CURSOR ==================== */
+.typed-cursor {
+    color: var(--primary-color);
+    font-weight: 300;
+    animation: typed-blink 0.9s infinite;
+}
+
+@keyframes typed-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* ==================== DESIGN SKILLS: GSAP WILL-CHANGE HINTS ==================== */
+.hero-title,
+.hero-subtitle,
+.stat-card,
+.funding-card,
+.step-card,
+.tier-milestone {
+    will-change: transform, opacity;
+}
