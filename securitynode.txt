@@ -1,0 +1,14 @@
+
+
+
+
+
+----- ASK PRECISE INFORMATION FOR THE TEAM, WHAT IT DOES, PRIVATE AND PUBLIC, AND WHERE IT COULD FAIL
+
+Run tests
+Read specs/docs
+Run fast tools (like slither, linters, static analysis, etc)
+Manual Analysis
+Run slow tools (like echidna, manticore, symbolic execution, MythX)
+Discuss (and repeat steps as needed)
+Write report (Example report)
