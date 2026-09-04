@@ -1,0 +1,108 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Brabo Markets — design tokens.
+ *
+ * Two inputs, kept separate on purpose:
+ *
+ *   IDENTITY comes from the brand artwork (the blue bull). Every colour below
+ *   is sampled from it: the near-black navy ground, the cyan of its eyes, the
+ *   gold edge-light on its horns.
+ *
+ *   STRUCTURE follows morpho.org. Their interface earns its depth from hairline
+ *   borders on flat fills — their stylesheet contains no box-shadows at all —
+ *   with one accent used sparingly, a px-locked type scale, big display type at
+ *   light weight, and almost no uppercase. Those rules are applied here.
+ * ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Ground & surfaces. Flat steps, no gradients — a panel is the ground plus a
+   * hairline, not a raised object. */
+  --abyss: #040e1c;
+  --abyss-2: #071324;
+  --surface: #0a1626;
+  --surface-2: #0e1c2e;
+  --surface-3: #14273c;
+
+  /* Hairlines. Morpho draws every edge with .5px at 10–15% white; 1px at ~7%
+   * carries the same visual weight and doesn't disappear on non-retina panels. */
+  --hair: rgba(255, 255, 255, 0.07);
+  --hair-2: rgba(255, 255, 255, 0.12);
+  --hair-3: rgba(255, 255, 255, 0.2);
+
+  /* Ink */
+  --ink: #f2f7fc;
+  --ink-2: #9db4ce;
+  --ink-3: #627893;
+
+  /* Accents. Cyan is the only action colour; gold is never a control. */
+  --cyan: #38c0f8;
+  --cyan-hi: #7fdcff;
+  --cyan-dim: #1a8fc9;
+  --cyan-tint: rgba(56, 192, 248, 0.16);
+  --cyan-tint-soft: rgba(56, 192, 248, 0.07);
+  --gold: #e0a860;
+  --gold-hi: #f2cb92;
+  --gold-tint: rgba(224, 168, 96, 0.13);
+
+  /* Semantic */
+  --green: #34d399;
+  --green-tint: rgba(52, 211, 153, 0.12);
+  --red: #fb7185;
+  --amber: #fbbf24;
+
+  --background-dark: var(--abyss);
+
+  /* Type. Geist for everything readable, Geist Mono for everything countable —
+   * amounts, addresses, thresholds, micro-labels. */
+  --font-sans: "Archivo", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Display width. Archivo carries a 62–125% width axis; headlines run wide,
+   * which is where the market-board voice comes from. */
+  --wide: 116%;
+  --wider: 122%;
+
+  /* Type scale, locked to px like Morpho's (they set html to 1rem = 1px and
+   * step 9/10/11/12/13/14/16/20/22/24/32/36/40/48/60/80/100). */
+  --t-11: 11px;
+  --t-12: 12px;
+  --t-13: 13px;
+  --t-14: 14px;
+  --t-16: 16px;
+  --t-20: 20px;
+  --t-24: 24px;
+  --t-32: 32px;
+  --t-40: 40px;
+  --t-56: 56px;
+  --t-80: 80px;
+
+  /* Radius — tighter than before; Morpho lives at 4/8/12/16. */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r: 10px;
+  --r-lg: 14px;
+  --r-pill: 999px;
+
+  /* The horn cut. A bull's horn is a sharp diagonal, so filled surfaces lose
+   * their top-right corner to one instead of being uniformly rounded. */
+  --chamfer: 13px;
+  --chamfer-sm: 8px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 120ms;
+  --t-mid: 200ms;
+  --t-slow: 420ms;
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
