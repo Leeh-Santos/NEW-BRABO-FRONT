@@ -83,3 +83,34 @@
   .ambient::before,
   .ambient::after { animation: none; }
 }
+
+/* The live candlestick field (components/ui/MarketField).
+ *
+ * These rules are load-bearing, not cosmetic. A <canvas> with no CSS size takes
+ * its layout size from its own `width`/`height` attributes — and the component
+ * writes those attributes on every ResizeObserver callback, at `clientSize ×
+ * devicePixelRatio`. Without a CSS size that means each write changes the layout
+ * size, which fires the observer, which writes again: the canvas multiplies by
+ * `dpr` every frame until it passes the maximum canvas size and the browser
+ * gives up and paints a broken-image placeholder over the whole page.
+ *
+ * At dpr 1 the multiplier is 1 and nothing happens, which is why this only
+ * shows up on scaled displays (Windows at 125% / 150%, HiDPI laptops).
+ *
+ * `position: fixed` + `inset: 0` makes the used size come from the viewport, so
+ * the attributes can never drive layout. MarketField also clamps to the
+ * viewport as a second line of defence. */
+.market-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* One vertical mask, not two composited layers: `mask-composite: intersect`
+     is unevenly supported, and unioning would lose the top fade. The field is a
+     floor — solid at the bottom, gone before it reaches the copy. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 20%, rgba(0, 0, 0, 0.5) 55%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 20%, rgba(0, 0, 0, 0.5) 55%, #000 100%);
+}

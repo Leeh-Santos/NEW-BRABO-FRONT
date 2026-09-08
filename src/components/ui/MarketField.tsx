@@ -76,8 +76,21 @@ export function MarketField() {
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
-      width = canvas.clientWidth;
-      height = canvas.clientHeight;
+
+      // Clamp to the viewport. This layer is `position: fixed; inset: 0`, so it
+      // can never legitimately be larger — and the clamp is what makes the
+      // pathological case impossible rather than merely unlikely. Writing
+      // `canvas.width` sets the element's *intrinsic* size; if the CSS size is
+      // ever missing, layout falls back to that intrinsic size, the
+      // ResizeObserver below fires again, and the canvas grows by `dpr` on every
+      // pass until the browser refuses to allocate it and paints a broken image
+      // across the page. Bounding the read breaks that cycle at the source.
+      const w = Math.min(canvas.clientWidth, window.innerWidth);
+      const h = Math.min(canvas.clientHeight, window.innerHeight);
+      if (w === width && h === height) return; // nothing to do, and no realloc
+
+      width = w;
+      height = h;
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);

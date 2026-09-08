@@ -27,9 +27,6 @@ const ContractsPage = lazy(() =>
 
 const queryClient = new QueryClient();
 
-/* RainbowKit's own modals. The trigger is ours (components/layout/WalletButton),
- * but the connect / account / chain dialogs are RainbowKit's DOM — these are the
- * knobs that reach them, topped up by the `--rk-*` overrides in index.css. */
 const rainbowTheme = darkTheme({
   accentColor: "#38C0F8",
   accentColorForeground: "#041220",
@@ -53,12 +50,7 @@ function App() {
         {/* `locale` is pinned rather than left to RainbowKit's default, which
             reads navigator.language — that is why the modals were rendering in
             Portuguese on a pt-BR browser while the rest of the app was English. */}
-        <RainbowKitProvider
-          theme={rainbowTheme}
-          locale="en-US"
-          modalSize="compact"
-          appInfo={{ appName: "Brabo Markets" }}
-        >
+        <RainbowKitProvider theme={rainbowTheme} locale="en-US">
           <ToastProvider>
             <BrowserRouter>
               <PageLayout>

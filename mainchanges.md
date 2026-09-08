@@ -66,6 +66,7 @@ src/
 │   │   ├── QuoteBreakdown.tsx  ← 20/80 split preview + NFT bonus
 │   │   ├── TierProgressionTrack.tsx
 │   │   └── HowItWorks.tsx
+ 
 │   ├── portfolio/              ← PositionOverview, TierCards, NftDisplay, ActivitySummary…
 │   ├── liquidity/              ← AddLiquidityCard, LiquidityStatsGrid
 │   ├── contracts/              ← ContractAddressCard

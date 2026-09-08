@@ -90,6 +90,49 @@
       <div class="bar"></div>
     </div>
     <div id="root"></div>
+    <!-- Boot watchdog. The React error boundary can only catch what happens
+         after the bundle runs; if the module graph itself fails to load — a
+         stale dev optimize-dep cache, a cached index.html pointing at asset
+         hashes that no longer exist, an offline CDN — nothing executes and the
+         page just sits there blank with the failure only in devtools. This
+         reports that case on the splash the user is already looking at. -->
+    <script>
+      (function () {
+        var reported = false;
+        function report(what, detail) {
+          if (reported) return;
+          reported = true;
+          var boot = document.getElementById("boot");
+          if (!boot) return;
+          boot.classList.remove("boot-hide");
+          boot.innerHTML =
+            '<div class="wm" style="color:#fb7185;font-size:13px">' + what + "</div>" +
+            '<div class="wm" style="max-width:min(560px,86vw);text-align:center;line-height:1.6;word-break:break-word">' +
+            String(detail || "").slice(0, 300) + "</div>" +
+            '<div class="wm" style="color:#627893">Hard-reload the page (Ctrl+Shift+R). If it persists, stop the dev server, delete node_modules/.vite, and start it again.</div>';
+        }
+        window.addEventListener("error", function (e) {
+          // Resource errors (a 404/504 on a script or stylesheet) don't bubble
+          // as window.onerror, so they arrive here in the capture phase.
+          if (e.target && e.target !== window && e.target.src) {
+            report("Failed to load application code", e.target.src);
+          } else if (!window.__braboBooted) {
+            report("Startup error", e.message);
+          }
+        }, true);
+        window.addEventListener("unhandledrejection", function (e) {
+          if (!window.__braboBooted) {
+            report("Startup error", (e.reason && (e.reason.message || e.reason)) || "unknown");
+          }
+        });
+        // Nothing rendered after 12s means the bundle never arrived.
+        setTimeout(function () {
+          if (!window.__braboBooted) {
+            report("Application did not start", "The page loaded but the app bundle never ran.");
+          }
+        }, 12000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
