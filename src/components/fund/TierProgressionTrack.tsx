@@ -25,7 +25,7 @@ export function TierProgressionTrack() {
             <div key={tier.key} className={`tier-milestone${reached ? " reached" : ""}`}>
               {/* Decorative: the tier name sits right beside it in text, so an
                   alt string here would just be read out twice. */}
-              <img src={tier.art} className="tier-icon" alt="" width={48} height={48} loading="lazy" />
+              <img src={tier.art} className="tier-icon" alt="" width={56} height={56} loading="lazy" />
               <span className="tier-name">{tier.name}</span>
               <span className="tier-threshold">${tier.thresholdUsd}</span>
             </div>

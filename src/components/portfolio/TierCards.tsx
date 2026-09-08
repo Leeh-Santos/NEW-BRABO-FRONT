@@ -20,7 +20,7 @@ export function TierCards() {
         const unlocked = currentTierIndex >= tier.index;
         return (
           <div key={tier.name} className={`tier-card${unlocked ? " unlocked" : ""}`}>
-            <img src={tier.art} className="tier-icon" alt="" width={48} height={48} loading="lazy" />
+            <img src={tier.art} className="tier-icon" alt="" width={56} height={56} loading="lazy" />
             <span className="tier-name">{tier.name}</span>
             <span className="tier-threshold">${tier.threshold}</span>
             <span className={unlocked ? "status-unlocked" : "status-locked"}>

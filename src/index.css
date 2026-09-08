@@ -481,15 +481,39 @@ a:hover { color: var(--cyan-hi); }
    One ruled block, not six floating cards: the 1px grid gap lets the container's
    hairline colour show through as the divider, so cells share their edges the
    way Morpho's data blocks do. */
+/* Six cards, and the column count is always a divisor of six.
+ *
+ * The shared-edge trick this grid uses — `gap: 1px` over a `--hair` container,
+ * so the gap itself draws the rules — has one failure mode: a track with no card
+ * in it isn't empty, it's a slab of the container fill. `auto-fit` was picking 4
+ * and 5 columns between roughly 760px and 1150px, which leaves 2 and 4 orphan
+ * tracks in the last row and paints exactly that grey patch beside the cards.
+ *
+ * Fixed counts avoid the whole class of problem rather than tuning `minmax`
+ * until it happens to look right: 1, 2 and 3 all divide 6, so the last row is
+ * always full and there is never a track left over. It also composes better —
+ * a deliberate 3 × 2 block instead of a 4 + 2 remainder.
+ *
+ * The breakpoints are set by the widest value (`7,982,219.74`, 12 mono
+ * characters at 24px ≈ 173px, plus 40px of card padding), so a column never
+ * gets too narrow for the number it has to hold. */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   margin: 0 0 56px;
   background: var(--hair);
   border: 1px solid var(--hair);
   border-radius: var(--r-lg);
   overflow: hidden;
+}
+
+@media (max-width: 860px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 520px) {
+  .stats-grid { grid-template-columns: 1fr; }
 }
 
 .stat-card {
@@ -522,7 +546,11 @@ a:hover { color: var(--cyan-hi); }
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.2;
-  overflow-wrap: anywhere;
+  /* Never `anywhere`: that split `7,982,219.74` across two lines after the
+     tenths digit, and the first line then reads as a complete — and wrong —
+     number. A figure is a single token. `0.0006 ETH` still wraps at its space,
+     which is the one break that doesn't change what the value says. */
+  overflow-wrap: normal;
 }
 
 .stat-subvalue {
@@ -618,15 +646,23 @@ a:hover { color: var(--cyan-hi); }
 .section-title::after { content: none; }
 
 /* ── Tiers ────────────────────────────────────────────────────────────────── */
+/* Three tiers, so the same divisor rule as .stats-grid: 3 columns or 1, never
+   2 — two columns would leave the third tier alone in a row beside an orphan
+   track, which the container's hairline fill renders as a grey slab. */
 .tier-progression-track,
 .tier-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--hair);
   border: 1px solid var(--hair);
   border-radius: var(--r-lg);
   overflow: hidden;
+}
+
+@media (max-width: 560px) {
+  .tier-progression-track,
+  .tier-cards-grid { grid-template-columns: 1fr; }
 }
 
 .tier-milestone,
@@ -685,8 +721,8 @@ a:hover { color: var(--cyan-hi); }
 
 .tier-icon {
   display: block;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   margin-bottom: 14px;
   filter: grayscale(1) opacity(0.38);
   transition: filter var(--t-mid) var(--ease);
@@ -695,10 +731,25 @@ a:hover { color: var(--cyan-hi); }
 .tier-milestone.reached .tier-icon,
 .tier-card.unlocked .tier-icon { filter: none; }
 
-/* Hovering a locked tier lifts it part-way, so the artwork is legible before
-   you've earned it without ever reading as unlocked. */
+/* Hovering a locked tier lifts it most of the way: the metal reads as bronze,
+   silver or gold rather than as grey, and brightens a little on top. It stops
+   short of full colour on purpose — an earned tier still has somewhere to go. */
 .tier-milestone:hover .tier-icon,
-.tier-card:hover .tier-icon { filter: grayscale(0.55) opacity(0.72); }
+.tier-card:hover .tier-icon {
+  filter: grayscale(0.28) opacity(0.9) saturate(1.18) brightness(1.08);
+}
+
+/* An earned tier already sits at full colour, so its hover has to come from
+   somewhere else — the metal itself saturates and brightens. No glow: nothing
+   in this interface casts light, so the shine lives in the artwork rather than
+   around it.
+   Specificity matters here. Without this rule the plain `:hover` above wins on
+   source order — both score (0,3,0) — and hovering a tier you had actually
+   earned would *desaturate* it. (0,4,0) settles it in either order. */
+.tier-milestone.reached:hover .tier-icon,
+.tier-card.unlocked:hover .tier-icon {
+  filter: saturate(1.3) brightness(1.16);
+}
 
 .tier-name { display: block; font-size: var(--t-14); font-weight: 500; margin-bottom: 3px; }
 .tier-threshold { display: block; }
@@ -1256,7 +1307,8 @@ a:hover { color: var(--cyan-hi); }
 }
 
 @media (max-width: 420px) {
-  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  /* .stats-grid columns are set with the grid itself — a `minmax` override here
+     would reintroduce the orphan-track case this file just designed out. */
   .nft-card { flex-direction: column; text-align: center; }
 }
 
