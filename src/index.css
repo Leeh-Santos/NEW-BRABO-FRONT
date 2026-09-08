@@ -1063,6 +1063,167 @@ a:hover { color: var(--cyan-hi); }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── Wallet control ──────────────────────────────────────────────────────────
+   Our markup (components/layout/WalletButton), so it can use the same horn cut,
+   the same flat cyan and the same mono figures as everything else. RainbowKit
+   only supplies the state and the modals. */
+.wallet {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity var(--t-mid) var(--ease);
+}
+
+.wallet-connect {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 9px 18px;
+  border: 1px solid transparent;
+  clip-path: polygon(0 0, calc(100% - var(--chamfer-sm)) 0, 100% var(--chamfer-sm), 100% 100%, 0 100%);
+  background: var(--cyan);
+  color: #041220;
+  font-family: inherit;
+  font-size: var(--t-13);
+  font-weight: 600;
+  font-stretch: 106%;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--t-fast) var(--ease);
+}
+
+.wallet-connect:hover { background: var(--cyan-hi); }
+.wallet-connect:active { background: var(--cyan-dim); }
+
+/* Clipped elements cannot paint an outline, so the focus ring goes inside. */
+.wallet-connect:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px #041220, inset 0 0 0 4px var(--cyan-hi);
+}
+
+/* A wrong network is a blocker, not a decoration — it takes the error colour
+   outright rather than a subtle tint nobody notices. */
+.wallet-connect.is-wrong { background: var(--red); color: #2a0812; }
+.wallet-connect.is-wrong:hover { background: #ff93a5; }
+
+/* Connected: two chips, outlined like every other secondary control. */
+.wallet-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid var(--hair-2);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.wallet-chip:hover { border-color: var(--hair-3); background: var(--surface-2); }
+
+.wallet-chain-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.wallet-chain-name { color: var(--ink-2); }
+
+/* The connection indicator, same green and same pulse as the hero eyebrow's. */
+.wallet-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+.wallet-account { padding-left: 12px; }
+.wallet-name { font-variant-numeric: tabular-nums; }
+
+.wallet-pending { display: inline-flex; }
+
+.wallet-spinner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--hair-2);
+  border-top-color: var(--gold);
+  animation: spin 700ms linear infinite;
+}
+
+/* The chain chip is the first thing to go when space is tight — the account
+   chip is the one people actually need to reach. */
+@media (max-width: 640px) {
+  .wallet-chain-name { display: none; }
+  .wallet-chain { padding: 8px 10px; }
+  .wallet-connect { padding: 9px 14px; font-size: var(--t-12); }
+}
+
+@media (max-width: 400px) {
+  .wallet-chain { display: none; }
+}
+
+/* ── RainbowKit modals ───────────────────────────────────────────────────────
+   The dialogs are RainbowKit's own DOM (vanilla-extract, content-hashed class
+   names), so these variables are the whole surface area available. Colours the
+   `darkTheme(...)` options in App.tsx already set are not repeated here.
+
+   The selector is doubled deliberately. RainbowKit injects its own
+   `[data-rk]{…}` <style> into the document at runtime, so it lands *after* this
+   stylesheet at identical specificity and wins on source order — a plain
+   `[data-rk]` block here resolves to RainbowKit's defaults and does nothing at
+   all. `[data-rk][data-rk]` scores (0,2,0) against their (0,1,0) and wins
+   regardless of injection order. */
+[data-rk][data-rk] {
+  --rk-fonts-body: var(--font-sans);
+  --rk-radii-modal: var(--r-lg);
+  --rk-radii-modalMobile: var(--r-lg);
+  --rk-radii-menuButton: var(--r-sm);
+  --rk-radii-actionButton: var(--r-sm);
+  --rk-radii-connectButton: var(--r-sm);
+
+  --rk-colors-modalBackground: var(--surface);
+  --rk-colors-modalBorder: var(--hair-2);
+  --rk-colors-modalBackdrop: rgba(2, 8, 18, 0.72);
+  --rk-colors-modalText: var(--ink);
+  --rk-colors-modalTextSecondary: var(--ink-2);
+  --rk-colors-modalTextDim: var(--ink-3);
+  --rk-colors-generalBorder: var(--hair);
+  --rk-colors-generalBorderDim: var(--hair);
+  --rk-colors-menuItemBackground: var(--surface-2);
+  --rk-colors-profileForeground: var(--surface-2);
+  --rk-colors-profileAction: var(--surface-3);
+  --rk-colors-profileActionHover: #1b3355;
+  --rk-colors-actionButtonBorder: var(--hair);
+  --rk-colors-actionButtonBorderMobile: var(--hair);
+  --rk-colors-actionButtonSecondaryBackground: var(--surface-3);
+  --rk-colors-closeButton: var(--ink-3);
+  --rk-colors-closeButtonBackground: var(--surface-3);
+  --rk-colors-selectedOptionBorder: var(--cyan-tint);
+  --rk-colors-connectionIndicator: var(--green);
+  --rk-colors-error: var(--red);
+  --rk-colors-standby: var(--gold);
+
+  /* No shadows anywhere else in this interface; the modal borrows the same
+     rule and separates from the page with its backdrop instead. */
+  --rk-shadows-dialog: none;
+  --rk-shadows-profileDetailsAction: none;
+  --rk-shadows-selectedOption: none;
+  --rk-shadows-selectedWallet: none;
+  --rk-shadows-walletLogo: none;
+  --rk-shadows-connectButton: none;
+}
+
 /* ── Utilities ────────────────────────────────────────────────────────────── */
 .sr-only {
   position: absolute;

@@ -1,5 +1,5 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Link } from "react-router-dom";
+import { WalletButton } from "./WalletButton";
 import bullMark from "../../assets/brand/brabo-bull-64.png";
 
 export function Navbar() {
@@ -23,7 +23,7 @@ export function Navbar() {
           <span className="navbar-tagline">$BRB · Base</span>
         </span>
       </Link>
-      <ConnectButton />
+      <WalletButton />
     </nav>
   );
 }
