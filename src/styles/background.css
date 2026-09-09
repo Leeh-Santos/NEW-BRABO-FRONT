@@ -69,14 +69,21 @@
   background: radial-gradient(ellipse 130% 95% at 50% 25%, transparent 40%, rgba(2, 7, 15, 0.6) 100%);
 }
 
+/* Translation only — deliberately no `scale`.
+ *
+ * A promoted layer can be moved by the compositor for free, but scaling it
+ * resamples the whole texture every frame, and these layers are vmax-sized. That
+ * made the two auroras the second most expensive thing on the page, for a
+ * breathing motion nobody can see at 4–7% opacity. The drift stays; the resample
+ * goes. */
 @keyframes drift-a {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to   { transform: translate3d(7vw, 6vh, 0) scale(1.12); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(7vw, 6vh, 0); }
 }
 
 @keyframes drift-b {
-  from { transform: translate3d(0, 0, 0) scale(1.08); }
-  to   { transform: translate3d(-6vw, -5vh, 0) scale(1); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-6vw, -5vh, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -105,9 +112,13 @@
   inset: 0;
   z-index: -1;
   display: block;
-  width: 100%;
+  /* One pitch of overhang past the right edge. MarketField drifts the field by
+     translating this element rather than redrawing it, and the overhang is the
+     material that slides in — without it the right edge would show a gap. */
+  width: calc(100% + 26px);
   height: 100%;
   pointer-events: none;
+  will-change: transform;
   /* One vertical mask, not two composited layers: `mask-composite: intersect`
      is unevenly supported, and unioning would lose the top fade. The field is a
      floor — solid at the bottom, gone before it reaches the copy. */

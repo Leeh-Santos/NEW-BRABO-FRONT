@@ -85,7 +85,10 @@ export function MarketField() {
       // ResizeObserver below fires again, and the canvas grows by `dpr` on every
       // pass until the browser refuses to allocate it and paints a broken image
       // across the page. Bounding the read breaks that cycle at the source.
-      const w = Math.min(canvas.clientWidth, window.innerWidth);
+      // The element is one pitch wider than the viewport (see background.css):
+      // that overhang is what the drift slides in from, so the right edge never
+      // shows a gap while the canvas is translated.
+      const w = Math.min(canvas.clientWidth, window.innerWidth + PITCH);
       const h = Math.min(canvas.clientHeight, window.innerHeight);
       if (w === width && h === height) return; // nothing to do, and no realloc
 
@@ -113,7 +116,9 @@ export function MarketField() {
 
       for (let i = 0; i < candles.length; i++) {
         const c = candles[i];
-        const x = i * PITCH - offset;
+        // Candles sit at fixed positions. The drift is the element's transform,
+        // not a per-frame offset baked into the geometry.
+        const x = i * PITCH;
         if (x < -PITCH || x > width + PITCH) continue;
 
         const up = c.close >= c.open;
@@ -129,16 +134,32 @@ export function MarketField() {
       }
     };
 
+    /* The drift is a compositor transform, and the pixels are only redrawn when
+     * a candle actually leaves.
+     *
+     * The field travels at SPEED px/s, so at 60fps a frame moves it a quarter of
+     * a pixel. Repainting a full-viewport canvas to move it that far — sixty
+     * times a second, forever — was by a distance the most expensive thing on
+     * the page. Translating the element instead costs no raster at all, and the
+     * geometry only changes when the offset passes one PITCH: every
+     * PITCH / SPEED ≈ 1.7s. That takes the redraw rate from 60/s to well under
+     * 1/s while looking exactly the same, because after a shift-by-one-candle
+     * with the offset wrapped the drawn content is identical. */
     const tick = (now: number) => {
       const dt = last ? Math.min((now - last) / 1000, 0.05) : 0;
       last = now;
       offset += SPEED * dt;
+
+      let shifted = false;
       while (offset >= PITCH) {
         offset -= PITCH;
         candles.push(step(walk));
         candles.shift();
+        shifted = true;
       }
-      draw();
+      if (shifted) draw();
+
+      canvas.style.transform = `translate3d(${-offset}px, 0, 0)`;
       frame = requestAnimationFrame(tick);
     };
 

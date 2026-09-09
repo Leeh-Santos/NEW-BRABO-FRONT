@@ -14,13 +14,17 @@ export function FundPage() {
     <div className="page-content fund-page">
       <section className="hero-section">
         {/* The mascot watching, cropped by the viewport rather than framed.
-            Lazy + async: it is decorative and must never delay the headline. */}
+            Not lazy: this sits in the first viewport, and `loading="lazy"` on
+            above-the-fold content defers the request until after layout, which
+            pushed it out to a ~5.8s largest-contentful-paint. `fetchPriority`
+            low + async decode keeps it from competing with the headline
+            instead — it yields, rather than starting late. */}
         <img
           src={bullPortrait}
           className="hero-bull"
           alt=""
           aria-hidden="true"
-          loading="lazy"
+          fetchPriority="low"
           decoding="async"
         />
         <div className="hero-copy">
