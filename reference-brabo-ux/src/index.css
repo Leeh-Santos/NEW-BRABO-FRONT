@@ -1,0 +1,1403 @@
+@import "./styles/fonts.css";
+@import "./styles/tokens.css";
+@import "./styles/background.css";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Brabo Markets — interface.
+
+   Identity is the bull: navy ground, cyan eyes, gold horns.
+   Structure follows morpho.org — depth comes from hairlines on flat fills, not
+   from shadows and gradients; one accent, used sparingly; big display type at
+   light weight; numbers in mono; almost no uppercase; a visible ruled grid.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* The ground lives on <html>, not <body>: index.html paints it inline so the
+ * first frame is already the brand, which stops <body>'s background from being
+ * propagated to the canvas. An opaque <body> would then paint over `.ambient`
+ * (a z-index:-1 child) and the whole backdrop would silently vanish. */
+html {
+  background: var(--abyss);
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--t-14);
+  line-height: 1.6;
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display voice.
+ *
+ * Wide and heavy, not light and neutral. Archivo's width axis is doing the work
+ * here — `font-stretch: 116%` on a 700 weight reads like a market board, which
+ * is what this protocol actually is. Default-width grotesques at light weight
+ * are what every other dark crypto site looks like. */
+h1, h2, h3, h4 {
+  font-weight: 700;
+  font-stretch: var(--wide);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(40px, 2.2rem + 4.6vw, 82px);
+  font-stretch: var(--wider);
+  text-transform: uppercase;
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+}
+
+h2 { font-size: clamp(26px, 1.4rem + 1.6vw, 38px); }
+h3 { font-size: var(--t-24); }
+h4 { font-size: var(--t-16); letter-spacing: -0.02em; }
+
+p { margin: 0 0 1em; text-wrap: pretty; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: var(--cyan-hi); }
+
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}
+
+::selection { background: var(--cyan-tint); color: #fff; }
+
+* { scrollbar-width: thin; scrollbar-color: var(--surface-3) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: var(--surface-3);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: var(--r-pill);
+}
+
+/* ── Micro-label ─────────────────────────────────────────────────────────────
+   Morpho's stylesheet contains four uppercase rules in total. Labels there are
+   set in the mono face at normal case instead — quieter, and it reads as data
+   rather than as a heading. Every small label in this app uses this. */
+.stat-label,
+.input-label,
+.address-label,
+.navbar-tagline,
+.stage-label,
+.tier-threshold,
+.coming-soon-badge,
+.status-badge.verified {
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-3);
+}
+
+/* ── Panels ──────────────────────────────────────────────────────────────────
+   One object, everywhere: flat fill, hairline edge, no shadow. */
+.funding-card,
+.nft-card,
+.nft-empty-state,
+.tier-progress-card,
+.activity-summary,
+.ecosystem-cta,
+.security-notice {
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-lg);
+}
+
+/* ── Navbar ───────────────────────────────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 64px;
+  padding: 0 24px;
+  background: rgba(4, 14, 28, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--hair);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  min-width: 0;
+}
+
+.navbar-logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - var(--chamfer-sm)) 0, 100% var(--chamfer-sm), 100% 100%, 0 100%);
+  object-fit: cover;
+  background: var(--surface);
+  transition: filter var(--t-mid) var(--ease);
+}
+
+.navbar-brand:hover .navbar-logo { filter: brightness(1.15); }
+
+.navbar-wordmark { display: flex; align-items: baseline; gap: 9px; min-width: 0; }
+
+.navbar-title {
+  font-size: var(--t-16);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.navbar-tagline { white-space: nowrap; }
+
+/* ── The tape ────────────────────────────────────────────────────────────────
+   Every figure on it is already fetched for the stats grid, so it costs no
+   extra RPC calls. This is the element that says "trading product" before a
+   single word is read — and it is real data, not decoration. */
+.ticker {
+  display: flex;
+  align-items: stretch;
+  height: 34px;
+  border-bottom: 1px solid var(--hair);
+  background: var(--abyss-2);
+  overflow: hidden;
+}
+
+.ticker-badge {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0 16px 0 24px;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 11px) 100%, 0 100%);
+  background: var(--gold);
+  color: #1c1206;
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.ticker-viewport {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 60px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 60px), transparent 100%);
+}
+
+/* Two identical rows translated by exactly -50% — that is what makes the loop
+   seamless at any width. */
+.ticker-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: tape 64s linear infinite;
+}
+
+.ticker:hover .ticker-track { animation-play-state: paused; }
+
+@keyframes tape {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.ticker-row { display: flex; align-items: center; }
+
+.ticker-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 0 20px;
+  border-right: 1px solid var(--hair);
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  white-space: nowrap;
+}
+
+.ticker-key { color: var(--ink-3); letter-spacing: 0.08em; }
+.ticker-val { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* A marquee is exactly the kind of persistent motion this setting exists to
+   stop. It becomes a static, scrollable strip instead of a shortened animation. */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-viewport { overflow-x: auto; scrollbar-width: none; }
+  .ticker-viewport::-webkit-scrollbar { display: none; }
+  .ticker-track { animation: none; }
+  .ticker-row[aria-hidden="true"] { display: none; }
+}
+
+/* ── Page nav ─────────────────────────────────────────────────────────────── */
+.page-nav {
+  position: sticky;
+  top: 64px;
+  z-index: 40;
+  display: flex;
+  gap: 2px;
+  padding: 0 24px;
+  background: rgba(4, 14, 28, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--hair);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.page-nav::-webkit-scrollbar { display: none; }
+
+/* Underline rather than pill: the tab sits *on* the rule that divides the
+ * header from the page, so the nav reads as part of the ruled structure. */
+.page-nav-tab {
+  position: relative;
+  padding: 14px 14px 13px;
+  color: var(--ink-3);
+  font-size: var(--t-14);
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+
+.page-nav-tab:hover { color: var(--ink); }
+
+.page-nav-tab.active {
+  color: var(--ink);
+  border-bottom-color: var(--cyan);
+}
+
+/* ── Shell ────────────────────────────────────────────────────────────────────
+   The content column is framed by hairlines, so the page reads as a drawn plan.
+   Below the frame width the rules would sit on the viewport edge, so drop them. */
+.main-container {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 32px 120px;
+}
+
+@media (min-width: 1216px) {
+  .main-container {
+    border-left: 1px solid var(--hair);
+    border-right: 1px solid var(--hair);
+  }
+}
+
+/* Sections stack against full-width rules instead of floating on margins. */
+.hero-section,
+.tier-progression-section,
+.how-it-works,
+.portfolio-section,
+.ecosystem-intro,
+.ecosystem-coming-soon,
+.contracts-intro,
+.security-notice-section {
+  padding: 56px 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.page-content > *:last-child { border-bottom: none; }
+
+.page-content:not(.fund-page) > * {
+  animation: fade-in var(--t-slow) var(--ease-out) both;
+}
+.page-content:not(.fund-page) > *:nth-child(2) { animation-delay: 50ms; }
+.page-content:not(.fund-page) > *:nth-child(3) { animation-delay: 100ms; }
+.page-content:not(.fund-page) > *:nth-child(n + 4) { animation-delay: 150ms; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────────────
+   Asymmetric on purpose: copy pinned left, the bull bleeding off the right
+   edge. A centred stack under a centred logo is the layout every generated
+   landing page arrives at. */
+.hero-section {
+  position: relative;
+  padding: 96px 0 80px;
+  text-align: left;
+  overflow: visible;
+}
+
+.hero-copy { position: relative; z-index: 1; max-width: 660px; }
+
+/* The mascot watching. Cropped by the viewport rather than framed, masked so it
+   dissolves into the ground instead of sitting on it as a picture. */
+.hero-bull {
+  position: absolute;
+  top: 50%;
+  right: -140px;
+  width: min(620px, 52vw);
+  height: auto;
+  transform: translateY(-50%);
+  --bull-o: 0.75;
+  opacity: var(--bull-o);
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: radial-gradient(ellipse 62% 62% at 62% 50%, #000 30%, transparent 76%);
+  mask-image: radial-gradient(ellipse 62% 62% at 62% 50%, #000 30%, transparent 76%);
+  animation: bull-settle 1.4s var(--ease-out) both;
+}
+
+@keyframes bull-settle {
+  from { opacity: 0; transform: translateY(-50%) scale(1.04); }
+  to   { opacity: var(--bull-o); transform: translateY(-50%) scale(1); }
+}
+
+@media (max-width: 900px) {
+  .hero-bull {
+    right: -22%;
+    width: 74vw;
+    --bull-o: 0.3;
+  }
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 13px 5px 11px;
+  margin-bottom: 30px;
+  border: 1px solid var(--hair-2);
+  clip-path: polygon(0 0, calc(100% - var(--chamfer-sm)) 0, 100% var(--chamfer-sm), 100% 100%, 0 100%);
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+
+.hero-eyebrow .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2.4s var(--ease) infinite;
+}
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.hero-title { margin-bottom: 24px; }
+
+/* Gold, not cyan. Cyan is the action colour and the hero title is not an
+   action — using it here is what makes an accent stop meaning anything. */
+.hero-title .accent {
+  color: var(--gold);
+  -webkit-text-stroke: 0;
+}
+
+.hero-subtitle {
+  color: var(--ink-2);
+  font-size: clamp(15px, 0.95rem + 0.4vw, 19px);
+  line-height: 1.55;
+  max-width: 46ch;
+  margin: 0;
+  min-height: 3.1em; /* reserves the typewriter's height — no layout shift */
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────────
+   Flat fills. No gradient, no glow, no shine sweep — Morpho's stylesheet has
+   no box-shadow in it at all, and the restraint is most of why it reads as
+   infrastructure rather than as a launch page. */
+.fund-btn,
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% 100%, 0 100%);
+  font-family: inherit;
+  font-size: var(--t-14);
+  font-weight: 600;
+  font-stretch: 106%;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #041220;
+  background: var(--cyan);
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.cta-button { width: auto; }
+
+.fund-btn:hover:not(:disabled),
+.cta-button:hover { background: var(--cyan-hi); color: #041220; }
+
+.fund-btn:active:not(:disabled),
+.cta-button:active { background: var(--cyan-dim); }
+
+.fund-btn:disabled {
+  background: transparent;
+  border-color: var(--hair);
+  color: var(--ink-3);
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 8px 15px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--hair-2);
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--t-13);
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.btn-secondary:hover { border-color: var(--hair-3); background: var(--surface-2); color: var(--ink); }
+
+/* ── Stats ───────────────────────────────────────────────────────────────────
+   One ruled block, not six floating cards: the 1px grid gap lets the container's
+   hairline colour show through as the divider, so cells share their edges the
+   way Morpho's data blocks do. */
+/* Six cards, and the column count is always a divisor of six.
+ *
+ * The shared-edge trick this grid uses — `gap: 1px` over a `--hair` container,
+ * so the gap itself draws the rules — has one failure mode: a track with no card
+ * in it isn't empty, it's a slab of the container fill. `auto-fit` was picking 4
+ * and 5 columns between roughly 760px and 1150px, which leaves 2 and 4 orphan
+ * tracks in the last row and paints exactly that grey patch beside the cards.
+ *
+ * Fixed counts avoid the whole class of problem rather than tuning `minmax`
+ * until it happens to look right: 1, 2 and 3 all divide 6, so the last row is
+ * always full and there is never a track left over. It also composes better —
+ * a deliberate 3 × 2 block instead of a 4 + 2 remainder.
+ *
+ * The breakpoints are set by the widest value (`7,982,219.74`, 12 mono
+ * characters at 24px ≈ 173px, plus 40px of card padding), so a column never
+ * gets too narrow for the number it has to hold. */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin: 0 0 56px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+@media (max-width: 860px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 520px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}
+
+.stat-card {
+  background: var(--surface);
+  padding: 20px;
+  transition: background var(--t-mid) var(--ease);
+}
+
+.stat-card:hover { background: var(--surface-2); }
+
+.stat-label { margin-bottom: 10px; }
+
+/* Every figure in the app is mono and tabular: amounts line up in a column and
+ * don't jitter as they count up. */
+.stat-value,
+.breakdown-value,
+.distribution-amount,
+.distribution-percentage,
+.tier-threshold,
+.contract-address,
+.nft-token-id,
+.tier-progress-header,
+.activity-row {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-value {
+  font-size: var(--t-24);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  /* Never `anywhere`: that split `7,982,219.74` across two lines after the
+     tenths digit, and the first line then reads as a complete — and wrong —
+     number. A figure is a single token. `0.0006 ETH` still wraps at its space,
+     which is the one break that doesn't change what the value says. */
+  overflow-wrap: normal;
+}
+
+.stat-subvalue {
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  color: var(--ink-3);
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Funding card ─────────────────────────────────────────────────────────── */
+.funding-card {
+  padding: 24px;
+  margin-bottom: 0;
+  max-width: 460px;
+}
+
+.input-label { display: block; margin-bottom: 8px; }
+
+.eth-input {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: var(--r);
+  border: 1px solid var(--hair-2);
+  background: var(--abyss-2);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--t-20);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 18px;
+  transition: border-color var(--t-fast) var(--ease);
+}
+
+.eth-input::placeholder { color: var(--ink-3); }
+.eth-input:focus { outline: none; border-color: var(--cyan); }
+
+.eth-input::-webkit-outer-spin-button,
+.eth-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.eth-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+.breakdown-section {
+  border-top: 1px solid var(--hair);
+  padding-top: 14px;
+  margin-bottom: 18px;
+}
+
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  font-size: var(--t-13);
+  padding: 7px 0;
+}
+
+.breakdown-label { color: var(--ink-3); }
+.breakdown-value { color: var(--ink-2); text-align: right; font-size: var(--t-13); }
+
+.breakdown-total {
+  border-top: 1px solid var(--hair);
+  margin-top: 6px;
+  padding-top: 14px;
+}
+
+.breakdown-total .breakdown-label { color: var(--ink); }
+.breakdown-total .breakdown-value { color: var(--cyan); font-size: var(--t-16); }
+
+/* ── Section headings ─────────────────────────────────────────────────────── */
+.section-title,
+.portfolio-section > h3,
+.ecosystem-coming-soon > h3 {
+  position: relative;
+  font-size: var(--t-24);
+  padding-left: 22px;
+  margin-bottom: 24px;
+}
+
+/* The horn tick: a short gold diagonal, the same angle as the chamfer. One
+   mark, reused as the section marker across the whole app. */
+.section-title::before,
+.portfolio-section > h3::before,
+.ecosystem-coming-soon > h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.18em;
+  width: 3px;
+  height: 0.82em;
+  background: var(--gold);
+  transform: skewX(-16deg);
+}
+
+.section-title::after { content: none; }
+
+/* ── Tiers ────────────────────────────────────────────────────────────────── */
+/* Three tiers, so the same divisor rule as .stats-grid: 3 columns or 1, never
+   2 — two columns would leave the third tier alone in a row beside an orphan
+   track, which the container's hairline fill renders as a grey slab. */
+.tier-progression-track,
+.tier-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+@media (max-width: 560px) {
+  .tier-progression-track,
+  .tier-cards-grid { grid-template-columns: 1fr; }
+}
+
+.tier-milestone,
+.tier-card {
+  background: var(--surface);
+  padding: 22px 16px;
+  text-align: left;
+  color: var(--ink-3);
+  transition: background var(--t-mid) var(--ease), color var(--t-mid) var(--ease);
+}
+
+.tier-milestone:hover,
+.tier-card:hover { background: var(--surface-2); }
+
+/* Gold marks status you earned. It is never used on anything clickable. */
+.tier-milestone.reached,
+.tier-card.unlocked {
+  background: var(--surface-2);
+  color: var(--ink);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.tier-milestone.reached::after,
+.tier-card.unlocked::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-top: var(--chamfer) solid var(--gold);
+  border-left: var(--chamfer) solid transparent;
+  opacity: 0.85;
+}
+
+.tier-milestone,
+.tier-card { position: relative; }
+
+/* ── Tier medallions ─────────────────────────────────────────────────────────
+   The three tier SVGs each carry their own dark square ground, a shade off our
+   panel fill. Left bare that reads as a mismatched tile, so every medallion is
+   framed the same way the brand mark is — horn cut, hairline edge — which turns
+   the seam into part of the object. Locked tiers are desaturated rather than
+   hidden: you should be able to see what you're funding toward.
+
+   28px is the floor. This artwork is a horned bull head in a square frame, and
+   below roughly that size the horns close up and it renders as a coloured tile
+   carrying no information. */
+.tier-icon,
+.nft-image,
+.stat-icon,
+.tier-progress-end img {
+  clip-path: polygon(0 0, calc(100% - var(--chamfer-sm)) 0, 100% var(--chamfer-sm), 100% 100%, 0 100%);
+  background: var(--abyss-2);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.tier-icon {
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 14px;
+  filter: grayscale(1) opacity(0.38);
+  transition: filter var(--t-mid) var(--ease);
+}
+
+.tier-milestone.reached .tier-icon,
+.tier-card.unlocked .tier-icon { filter: none; }
+
+/* Hovering a locked tier lifts it most of the way: the metal reads as bronze,
+   silver or gold rather than as grey, and brightens a little on top. It stops
+   short of full colour on purpose — an earned tier still has somewhere to go. */
+.tier-milestone:hover .tier-icon,
+.tier-card:hover .tier-icon {
+  filter: grayscale(0.28) opacity(0.9) saturate(1.18) brightness(1.08);
+}
+
+/* An earned tier already sits at full colour, so its hover has to come from
+   somewhere else — the metal itself saturates and brightens. No glow: nothing
+   in this interface casts light, so the shine lives in the artwork rather than
+   around it.
+   Specificity matters here. Without this rule the plain `:hover` above wins on
+   source order — both score (0,3,0) — and hovering a tier you had actually
+   earned would *desaturate* it. (0,4,0) settles it in either order. */
+.tier-milestone.reached:hover .tier-icon,
+.tier-card.unlocked:hover .tier-icon {
+  filter: saturate(1.3) brightness(1.16);
+}
+
+.tier-name { display: block; font-size: var(--t-14); font-weight: 500; margin-bottom: 3px; }
+.tier-threshold { display: block; }
+
+.status-unlocked { color: var(--gold-hi); font-size: var(--t-12); font-family: var(--font-mono); }
+.status-locked { color: var(--ink-3); font-size: var(--t-12); font-family: var(--font-mono); }
+
+/* ── How it works ─────────────────────────────────────────────────────────── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.step-card {
+  background: var(--surface);
+  padding: 22px 20px 24px;
+  transition: background var(--t-mid) var(--ease);
+}
+
+.step-card:hover { background: var(--surface-2); }
+
+/* Numbering is real here — funding genuinely is a four-step sequence — so it
+ * stays, but as a quiet mono index rather than a filled badge. */
+.step-number {
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  color: var(--cyan);
+  margin-bottom: 14px;
+}
+
+.step-number::before { content: "0"; }
+
+.step-title { font-size: var(--t-14); font-weight: 500; margin-bottom: 6px; }
+.step-description { color: var(--ink-3); font-size: var(--t-13); margin: 0; }
+
+/* ── Toast ────────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  max-width: min(400px, calc(100vw - 32px));
+  padding: 13px 16px;
+  border-radius: var(--r);
+  background: var(--surface-2);
+  border: 1px solid var(--hair-2);
+  border-left: 2px solid var(--ink-3);
+  color: var(--ink);
+  font-size: var(--t-13);
+  animation: toast-in 260ms var(--ease-out) both;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.toast.success { border-left-color: var(--green); }
+.toast.error   { border-left-color: var(--red); }
+.toast.warning { border-left-color: var(--amber); }
+
+/* ── Page headers ─────────────────────────────────────────────────────────── */
+.page-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 56px;
+}
+
+.quick-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.page-subtitle {
+  color: var(--ink-2);
+  font-size: var(--t-16);
+  margin: 0 0 40px;
+  max-width: 58ch;
+}
+
+.connect-prompt { max-width: 420px; margin: 120px auto; text-align: center; }
+.connect-prompt .fund-btn { margin-top: 20px; }
+
+/* ── Portfolio ────────────────────────────────────────────────────────────── */
+.nft-empty-state {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  max-width: 460px;
+  padding: 20px;
+  color: var(--ink-2);
+  font-size: var(--t-13);
+  background: transparent;
+  border-style: dashed;
+}
+
+.nft-empty-copy { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.nft-empty-copy p { margin: 0; }
+.nft-empty-hint { color: var(--ink-3); }
+
+.nft-card { display: flex; gap: 18px; align-items: center; padding: 18px; max-width: 460px; }
+.nft-card-bronze { box-shadow: inset 2px 0 0 #cd7f32; }
+.nft-card-silver { box-shadow: inset 2px 0 0 #cbd5e1; }
+.nft-card-gold   { box-shadow: inset 2px 0 0 var(--gold); }
+
+.nft-image { width: 72px; height: 72px; }
+.nft-image-locked { filter: grayscale(1) opacity(0.4); }
+.nft-details { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.nft-tier-badge { font-size: var(--t-16); font-weight: 500; }
+.nft-token-id { font-size: var(--t-12); color: var(--ink-3); }
+.nft-bonus { color: var(--gold-hi); font-size: var(--t-13); }
+
+.tier-progress-card { padding: 20px; margin-bottom: 16px; }
+
+.tier-progress-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--t-12);
+  color: var(--ink-3);
+  margin-bottom: 12px;
+}
+
+.tier-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--surface-3);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+
+.tier-progress-fill {
+  height: 100%;
+  background: var(--cyan);
+  border-radius: var(--r-pill);
+  transition: width var(--t-slow) var(--ease-out);
+}
+
+.tier-progress-message { margin-top: 12px; font-size: var(--t-13); color: var(--ink-3); }
+
+.activity-summary { padding: 4px 20px; max-width: 460px; }
+
+.activity-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  font-size: var(--t-13);
+  border-bottom: 1px solid var(--hair);
+}
+.activity-row:last-child { border-bottom: none; }
+.activity-row > span:first-child { color: var(--ink-3); font-family: var(--font-sans); }
+
+/* ── Ecosystem / distribution / contracts ─────────────────────────────────── */
+.ecosystem-cta,
+.contracts-intro { margin-bottom: 0; }
+
+.distribution-grid,
+.ecosystem-grid,
+.contracts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  margin-top: 20px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.distribution-item,
+.ecosystem-card,
+.contract-card {
+  background: var(--surface);
+  padding: 22px 20px;
+  transition: background var(--t-mid) var(--ease);
+}
+
+.distribution-item:hover,
+.ecosystem-card:hover,
+.contract-card:hover { background: var(--surface-2); }
+
+.distribution-icon,
+.ecosystem-icon,
+.contract-icon {
+  font-size: var(--t-20);
+  line-height: 1;
+  display: block;
+  margin-bottom: 12px;
+  filter: grayscale(1) opacity(0.6);
+}
+
+.distribution-label { font-size: var(--t-14); font-weight: 500; }
+.distribution-amount { font-size: var(--t-13); color: var(--ink-2); }
+.distribution-percentage { color: var(--cyan); font-size: var(--t-13); }
+.distribution-description { color: var(--ink-3); font-size: var(--t-13); }
+.distribution-note { margin-top: 20px; color: var(--ink-3); font-size: var(--t-13); }
+
+.ecosystem-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.coming-soon-badge,
+.status-badge.verified,
+.transparency-badge {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--hair-2);
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  background: transparent;
+}
+
+.coming-soon-badge { color: var(--ink-3); }
+.status-badge.verified { color: var(--green); border-color: rgba(52, 211, 153, 0.3); }
+
+.transparency-badge {
+  display: inline-block;
+  color: var(--green);
+  border-color: rgba(52, 211, 153, 0.3);
+  margin-bottom: 16px;
+}
+
+.ecosystem-features {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+  font-size: var(--t-13);
+  color: var(--ink-3);
+  display: grid;
+  gap: 6px;
+}
+
+.ecosystem-features li { position: relative; padding-left: 16px; }
+
+.ecosystem-features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 6px;
+  height: 1px;
+  background: var(--ink-3);
+}
+
+.ecosystem-cta {
+  text-align: center;
+  padding: 64px 32px;
+  background: var(--surface);
+}
+
+.contract-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contract-name { margin: 10px 0 4px; font-size: var(--t-16); }
+.contract-description { color: var(--ink-3); font-size: var(--t-13); margin-bottom: 16px; }
+.contract-address-section { margin-bottom: 14px; }
+.address-label { margin-bottom: 6px; }
+
+.address-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--abyss-2);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-sm);
+  padding: 7px 7px 7px 11px;
+}
+
+.contract-address {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--t-12);
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--hair-2);
+  color: var(--ink-3);
+  border-radius: var(--r-xs);
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.copy-btn:hover { border-color: var(--hair-3); color: var(--ink); }
+
+.contract-link { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-13); }
+.contract-link::after { content: "↗"; transition: transform var(--t-fast) var(--ease); }
+.contract-link:hover::after { transform: translate(2px, -2px); }
+
+.security-notice { padding: 24px; background: var(--surface); }
+
+.security-tips {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: flex;
+  gap: 10px 28px;
+  color: var(--ink-3);
+  font-size: var(--t-13);
+  flex-wrap: wrap;
+}
+
+.security-tips li { position: relative; padding-left: 20px; }
+.security-tips li::before { content: "✓"; position: absolute; left: 0; color: var(--green); }
+
+/* ── Skeletons ────────────────────────────────────────────────────────────── */
+.skeleton {
+  display: inline-block;
+  min-width: 4.5ch;
+  width: 65%;
+  height: 0.85em;
+  vertical-align: middle;
+  border-radius: var(--r-xs);
+  background: var(--surface-3);
+  animation: breathe 1.6s var(--ease) infinite;
+}
+
+@keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+/* ── Route suspense fallback ──────────────────────────────────────────────── */
+.route-fallback {
+  display: grid;
+  place-items: center;
+  min-height: 46vh;
+  gap: 14px;
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+}
+
+.route-fallback .spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--hair-2);
+  border-top-color: var(--cyan);
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Wallet control ──────────────────────────────────────────────────────────
+   Our markup (components/layout/WalletButton), so it can use the same horn cut,
+   the same flat cyan and the same mono figures as everything else. RainbowKit
+   only supplies the state and the modals. */
+.wallet {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity var(--t-mid) var(--ease);
+}
+
+.wallet-connect {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 9px 18px;
+  border: 1px solid transparent;
+  clip-path: polygon(0 0, calc(100% - var(--chamfer-sm)) 0, 100% var(--chamfer-sm), 100% 100%, 0 100%);
+  background: var(--cyan);
+  color: #041220;
+  font-family: inherit;
+  font-size: var(--t-13);
+  font-weight: 600;
+  font-stretch: 106%;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--t-fast) var(--ease);
+}
+
+.wallet-connect:hover { background: var(--cyan-hi); }
+.wallet-connect:active { background: var(--cyan-dim); }
+
+/* Clipped elements cannot paint an outline, so the focus ring goes inside. */
+.wallet-connect:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px #041220, inset 0 0 0 4px var(--cyan-hi);
+}
+
+/* A wrong network is a blocker, not a decoration — it takes the error colour
+   outright rather than a subtle tint nobody notices. */
+.wallet-connect.is-wrong { background: var(--red); color: #2a0812; }
+.wallet-connect.is-wrong:hover { background: #ff93a5; }
+
+/* Connected: two chips, outlined like every other secondary control. */
+.wallet-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid var(--hair-2);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.wallet-chip:hover { border-color: var(--hair-3); background: var(--surface-2); }
+
+.wallet-chain-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.wallet-chain-name { color: var(--ink-2); }
+
+/* The connection indicator, same green and same pulse as the hero eyebrow's. */
+.wallet-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+.wallet-account { padding-left: 12px; }
+.wallet-name { font-variant-numeric: tabular-nums; }
+
+.wallet-pending { display: inline-flex; }
+
+.wallet-spinner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--hair-2);
+  border-top-color: var(--gold);
+  animation: spin 700ms linear infinite;
+}
+
+/* The chain chip is the first thing to go when space is tight — the account
+   chip is the one people actually need to reach. */
+@media (max-width: 640px) {
+  .wallet-chain-name { display: none; }
+  .wallet-chain { padding: 8px 10px; }
+  .wallet-connect { padding: 9px 14px; font-size: var(--t-12); }
+}
+
+@media (max-width: 400px) {
+  .wallet-chain { display: none; }
+}
+
+/* ── RainbowKit modals ───────────────────────────────────────────────────────
+   The dialogs are RainbowKit's own DOM (vanilla-extract, content-hashed class
+   names), so these variables are the whole surface area available. Colours the
+   `darkTheme(...)` options in App.tsx already set are not repeated here.
+
+   The selector is doubled deliberately. RainbowKit injects its own
+   `[data-rk]{…}` <style> into the document at runtime, so it lands *after* this
+   stylesheet at identical specificity and wins on source order — a plain
+   `[data-rk]` block here resolves to RainbowKit's defaults and does nothing at
+   all. `[data-rk][data-rk]` scores (0,2,0) against their (0,1,0) and wins
+   regardless of injection order. */
+[data-rk][data-rk] {
+  --rk-fonts-body: var(--font-sans);
+  --rk-radii-modal: var(--r-lg);
+  --rk-radii-modalMobile: var(--r-lg);
+  --rk-radii-menuButton: var(--r-sm);
+  --rk-radii-actionButton: var(--r-sm);
+  --rk-radii-connectButton: var(--r-sm);
+
+  --rk-colors-modalBackground: var(--surface);
+  --rk-colors-modalBorder: var(--hair-2);
+  --rk-colors-modalBackdrop: rgba(2, 8, 18, 0.72);
+  --rk-colors-modalText: var(--ink);
+  --rk-colors-modalTextSecondary: var(--ink-2);
+  --rk-colors-modalTextDim: var(--ink-3);
+  --rk-colors-generalBorder: var(--hair);
+  --rk-colors-generalBorderDim: var(--hair);
+  --rk-colors-menuItemBackground: var(--surface-2);
+  --rk-colors-profileForeground: var(--surface-2);
+  --rk-colors-profileAction: var(--surface-3);
+  --rk-colors-profileActionHover: #1b3355;
+  --rk-colors-actionButtonBorder: var(--hair);
+  --rk-colors-actionButtonBorderMobile: var(--hair);
+  --rk-colors-actionButtonSecondaryBackground: var(--surface-3);
+  --rk-colors-closeButton: var(--ink-3);
+  --rk-colors-closeButtonBackground: var(--surface-3);
+  --rk-colors-selectedOptionBorder: var(--cyan-tint);
+  --rk-colors-connectionIndicator: var(--green);
+  --rk-colors-error: var(--red);
+  --rk-colors-standby: var(--gold);
+
+  /* No shadows anywhere else in this interface; the modal borrows the same
+     rule and separates from the page with its backdrop instead. */
+  --rk-shadows-dialog: none;
+  --rk-shadows-profileDetailsAction: none;
+  --rk-shadows-selectedOption: none;
+  --rk-shadows-selectedWallet: none;
+  --rk-shadows-walletLogo: none;
+  --rk-shadows-connectButton: none;
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .navbar { height: 56px; padding: 0 16px; }
+  .navbar-logo { width: 28px; height: 28px; }
+  .navbar-tagline { display: none; }
+  .page-nav { top: 56px; padding: 0 16px; }
+  .page-nav-tab { padding: 12px 11px 11px; }
+  .main-container { padding: 0 16px 80px; }
+  .hero-section { padding: 48px 0 44px; }
+  .hero-section,
+  .tier-progression-section,
+  .how-it-works,
+  .portfolio-section { padding-top: 40px; padding-bottom: 40px; }
+  .funding-card { padding: 20px; }
+  .toast { left: 16px; right: 16px; bottom: 16px; max-width: none; }
+  .security-tips { flex-direction: column; gap: 8px; }
+}
+
+@media (max-width: 420px) {
+  /* .stats-grid columns are set with the grid itself — a `minmax` override here
+     would reintroduce the orphan-track case this file just designed out. */
+  .nft-card { flex-direction: column; text-align: center; }
+}
+
+/* ── Crash panel ─────────────────────────────────────────────────────────────
+   components/ui/ErrorBoundary. Deliberately plain: no chamfer, no accent fill,
+   no animation. A failure state should not look designed — it should look like
+   the machine telling you something, so it reads as different in kind from the
+   rest of the interface. */
+.crash {
+  display: grid;
+  place-items: center;
+  min-height: 70vh;
+  padding: 40px 20px;
+}
+
+.crash-panel {
+  width: min(620px, 100%);
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--hair-2);
+}
+
+.crash-label {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: var(--t-11);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.crash-title {
+  margin: 0 0 10px;
+  font-size: var(--t-24);
+  font-stretch: var(--wide);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.crash-copy {
+  margin: 0 0 20px;
+  max-width: 46ch;
+  color: var(--ink-2);
+  font-size: var(--t-14);
+  line-height: 1.6;
+}
+
+.crash-detail {
+  margin: 0 0 22px;
+  padding: 14px;
+  max-height: 220px;
+  overflow: auto;
+  background: var(--abyss-2);
+  border: 1px solid var(--hair);
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.crash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.crash-btn {
+  padding: 11px 18px;
+  background: var(--cyan);
+  border: 1px solid var(--cyan);
+  color: #041220;
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+
+.crash-btn:hover { background: var(--cyan-hi); border-color: var(--cyan-hi); }
+
+.crash-btn.is-ghost {
+  background: transparent;
+  border-color: var(--hair-2);
+  color: var(--ink-2);
+}
+
+.crash-btn.is-ghost:hover { border-color: var(--hair-3); color: var(--ink); }

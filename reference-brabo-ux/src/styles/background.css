@@ -1,0 +1,127 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Ambient background.
+ *
+ * Replaces the Vanta.NET / three.js canvas the Fund page used to mount (~600 KB
+ * of JS plus a permanent WebGL loop, for a backdrop). The aurora layers animate
+ * `transform` only, so they live on the compositor and cost nothing per frame.
+ *
+ * Dialled well down from the first pass: Morpho's ground is flat and quiet, and
+ * lets the hairline grid do the work. What's left here is atmosphere, not decor.
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--abyss);
+  contain: layout paint style;
+}
+
+.ambient::before {
+  content: "";
+  position: absolute;
+  left: -15%;
+  top: -35%;
+  width: 85vmax;
+  height: 85vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 192, 248, 0.07) 0%, rgba(56, 192, 248, 0) 60%);
+  animation: drift-a 40s var(--ease) infinite alternate;
+  will-change: transform;
+}
+
+.ambient::after {
+  content: "";
+  position: absolute;
+  right: -25%;
+  bottom: -35%;
+  width: 75vmax;
+  height: 75vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224, 168, 96, 0.045) 0%, rgba(224, 168, 96, 0) 58%);
+  animation: drift-b 52s var(--ease) infinite alternate;
+  will-change: transform;
+}
+
+/* The ruled grid.
+ *
+ * This is the one Morpho device worth stealing wholesale: their page is built
+ * on visible structure — `--midnight-grid-stroke-*` at 5% white — so the layout
+ * reads as a drawn plan rather than as floating boxes. Column width matches the
+ * content frame so the verticals line up with the container edges. */
+.ambient-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.038) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 152px 152px;
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(#000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 92%);
+  mask-image: linear-gradient(#000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 92%);
+}
+
+.ambient-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 130% 95% at 50% 25%, transparent 40%, rgba(2, 7, 15, 0.6) 100%);
+}
+
+/* Translation only — deliberately no `scale`.
+ *
+ * A promoted layer can be moved by the compositor for free, but scaling it
+ * resamples the whole texture every frame, and these layers are vmax-sized. That
+ * made the two auroras the second most expensive thing on the page, for a
+ * breathing motion nobody can see at 4–7% opacity. The drift stays; the resample
+ * goes. */
+@keyframes drift-a {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(7vw, 6vh, 0); }
+}
+
+@keyframes drift-b {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-6vw, -5vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient::before,
+  .ambient::after { animation: none; }
+}
+
+/* The live candlestick field (components/ui/MarketField).
+ *
+ * These rules are load-bearing, not cosmetic. A <canvas> with no CSS size takes
+ * its layout size from its own `width`/`height` attributes — and the component
+ * writes those attributes on every ResizeObserver callback, at `clientSize ×
+ * devicePixelRatio`. Without a CSS size that means each write changes the layout
+ * size, which fires the observer, which writes again: the canvas multiplies by
+ * `dpr` every frame until it passes the maximum canvas size and the browser
+ * gives up and paints a broken-image placeholder over the whole page.
+ *
+ * At dpr 1 the multiplier is 1 and nothing happens, which is why this only
+ * shows up on scaled displays (Windows at 125% / 150%, HiDPI laptops).
+ *
+ * `position: fixed` + `inset: 0` makes the used size come from the viewport, so
+ * the attributes can never drive layout. MarketField also clamps to the
+ * viewport as a second line of defence. */
+.market-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  /* One pitch of overhang past the right edge. MarketField drifts the field by
+     translating this element rather than redrawing it, and the overhang is the
+     material that slides in — without it the right edge would show a gap. */
+  width: calc(100% + 26px);
+  height: 100%;
+  pointer-events: none;
+  will-change: transform;
+  /* One vertical mask, not two composited layers: `mask-composite: intersect`
+     is unevenly supported, and unioning would lose the top fade. The field is a
+     floor — solid at the bottom, gone before it reaches the copy. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 20%, rgba(0, 0, 0, 0.5) 55%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 20%, rgba(0, 0, 0, 0.5) 55%, #000 100%);
+}
