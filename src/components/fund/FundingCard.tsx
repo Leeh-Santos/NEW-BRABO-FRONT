@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
+import { useEthPrice } from "../../hooks/useEthPrice";
 import { useFundQuote } from "../../hooks/useFundQuote";
 import { useFundTransaction } from "../../hooks/useFundTransaction";
 import { useUserData } from "../../hooks/useUserData";
+import { formatUsd } from "../../lib/formatters";
 import { calculateBonusTokens } from "../../lib/quote";
 import { QuoteBreakdown } from "./QuoteBreakdown";
 
@@ -14,6 +16,7 @@ export function FundingCard() {
 
   const { data: quote, isFetching: isQuoteLoading } = useFundQuote(debouncedAmount);
   const { bonusPercentage, tierName, refetch: refetchUserData } = useUserData();
+  const { data: ethPriceUsd } = useEthPrice();
 
   const { fund, isBusy } = useFundTransaction(() => {
     setEthAmount("");
@@ -28,6 +31,11 @@ export function FundingCard() {
 
   const isValidAmount = parseFloat(ethAmount) > 0;
   const canSubmit = isConnected && isValidAmount && !isBusy;
+
+  const usdValue =
+    isValidAmount && ethPriceUsd !== undefined
+      ? parseFloat(ethAmount) * ethPriceUsd
+      : undefined;
 
   return (
     <div className="funding-card">
@@ -44,6 +52,7 @@ export function FundingCard() {
         onChange={(e) => setEthAmount(e.target.value)}
         className="eth-input"
       />
+      {usdValue !== undefined && <div className="eth-input-usd">≈ {formatUsd(usdValue)}</div>}
 
       {isValidAmount && (
         <QuoteBreakdown

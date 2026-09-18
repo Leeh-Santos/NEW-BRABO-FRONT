@@ -580,7 +580,7 @@ a:hover { color: var(--cyan-hi); }
   font-family: var(--font-mono);
   font-size: var(--t-20);
   font-variant-numeric: tabular-nums;
-  margin-bottom: 18px;
+  margin-bottom: 6px;
   transition: border-color var(--t-fast) var(--ease);
 }
 
@@ -590,6 +590,14 @@ a:hover { color: var(--cyan-hi); }
 .eth-input::-webkit-outer-spin-button,
 .eth-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .eth-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+.eth-input-usd {
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 18px;
+}
 
 .breakdown-section {
   border-top: 1px solid var(--hair);
