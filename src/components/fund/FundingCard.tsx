@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useAccount } from "wagmi";
+import { formatEther } from "viem";
+import { useAccount, useBalance } from "wagmi";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { useEthPrice } from "../../hooks/useEthPrice";
 import { useFundQuote } from "../../hooks/useFundQuote";
@@ -12,7 +13,8 @@ import { QuoteBreakdown } from "./QuoteBreakdown";
 export function FundingCard() {
   const [ethAmount, setEthAmount] = useState("");
   const debouncedAmount = useDebouncedValue(ethAmount, 500);
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+  const { data: balance } = useBalance({ address });
 
   const { data: quote, isFetching: isQuoteLoading } = useFundQuote(debouncedAmount);
   const { bonusPercentage, tierName, refetch: refetchUserData } = useUserData();
@@ -37,21 +39,36 @@ export function FundingCard() {
       ? parseFloat(ethAmount) * ethPriceUsd
       : undefined;
 
+  const handleMaxClick = () => {
+    if (!balance) return;
+    setEthAmount(formatEther(balance.value));
+  };
+
   return (
     <div className="funding-card">
       <label htmlFor="ethInput" className="input-label">
         ETH Amount
       </label>
-      <input
-        id="ethInput"
-        type="number"
-        min="0"
-        step="0.001"
-        placeholder="0.0"
-        value={ethAmount}
-        onChange={(e) => setEthAmount(e.target.value)}
-        className="eth-input"
-      />
+      <div className="eth-input-row">
+        <input
+          id="ethInput"
+          type="number"
+          min="0"
+          step="0.001"
+          placeholder="0.0"
+          value={ethAmount}
+          onChange={(e) => setEthAmount(e.target.value)}
+          className="eth-input"
+        />
+        <button
+          type="button"
+          className="max-btn"
+          disabled={!isConnected || !balance}
+          onClick={handleMaxClick}
+        >
+          Max
+        </button>
+      </div>
       {usdValue !== undefined && <div className="eth-input-usd">≈ {formatUsd(usdValue)}</div>}
 
       {isValidAmount && (

@@ -570,9 +570,14 @@ a:hover { color: var(--cyan-hi); }
 
 .input-label { display: block; margin-bottom: 8px; }
 
+.eth-input-row {
+  position: relative;
+  margin-bottom: 6px;
+}
+
 .eth-input {
   width: 100%;
-  padding: 13px 14px;
+  padding: 13px 64px 13px 14px;
   border-radius: var(--r);
   border: 1px solid var(--hair-2);
   background: var(--abyss-2);
@@ -580,7 +585,6 @@ a:hover { color: var(--cyan-hi); }
   font-family: var(--font-mono);
   font-size: var(--t-20);
   font-variant-numeric: tabular-nums;
-  margin-bottom: 6px;
   transition: border-color var(--t-fast) var(--ease);
 }
 
@@ -590,6 +594,27 @@ a:hover { color: var(--cyan-hi); }
 .eth-input::-webkit-outer-spin-button,
 .eth-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .eth-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+.max-btn {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: none;
+  background: var(--cyan);
+  color: #041220;
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), opacity var(--t-fast) var(--ease);
+}
+
+.max-btn:hover:not(:disabled) { background: var(--cyan-hi); }
+.max-btn:active:not(:disabled) { background: var(--cyan-dim); }
+.max-btn:disabled { background: var(--hair-2); color: var(--ink-3); cursor: not-allowed; }
 
 .eth-input-usd {
   font-family: var(--font-mono);
