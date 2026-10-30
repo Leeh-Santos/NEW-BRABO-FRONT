@@ -1,5 +1,16 @@
 import { BaseError, ContractFunctionRevertedError, UserRejectedRequestError } from "viem";
 
+const DICE_ERRORS: Record<string, string> = {
+  BraboDice__ZeroAmount: "Enter a stake greater than zero",
+  BraboDice__TransferFailed: "$BRB transfer failed — check your balance and allowance",
+  BraboDice__FeeOnTransferNotSupported: "This token charges a transfer fee and can't be staked",
+  BraboDice__GameNotOpen: "That game is no longer open — someone may have taken it",
+  BraboDice__GameExpired: "That game has expired",
+  BraboDice__CannotChallengeOwnGame: "You can't accept your own game",
+  BraboDice__NotRefundable: "This game can't be refunded yet",
+  BraboDice__NothingToWithdraw: "Nothing to withdraw",
+};
+
 /** Ports the error-message mapping from legacy-site/script.js `fundWithEth`/`addLiquidityToPool`
  * onto viem's structured error types. */
 export function getFriendlyErrorMessage(error: unknown, fallback = "Transaction failed"): string {
@@ -10,6 +21,8 @@ export function getFriendlyErrorMessage(error: unknown, fallback = "Transaction 
     const revert = error.walk((e) => e instanceof ContractFunctionRevertedError);
     if (revert instanceof ContractFunctionRevertedError) {
       const reason = revert.data?.errorName ?? revert.shortMessage;
+      const diceMessage = reason ? DICE_ERRORS[reason] : undefined;
+      if (diceMessage) return diceMessage;
       if (reason?.includes("InsufficientPica")) return "Insufficient BRB tokens in contract";
       if (revert.shortMessage?.toLowerCase().includes("spend more eth")) {
         return "Amount below minimum requirement ($0.20 USD)";

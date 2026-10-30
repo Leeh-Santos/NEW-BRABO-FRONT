@@ -10,7 +10,7 @@ import { wagmiConfig } from "./config/wagmi";
 import { FundPage } from "./pages/FundPage";
 
 /* FundPage is the landing route, so it stays in the entry bundle — lazy-loading
- * it would only add a round-trip before first paint. The other four are split
+ * it would only add a round-trip before first paint. The other pages are split
  * out: most visitors land on `/`, fund, and never open them. */
 const PortfolioPage = lazy(() =>
   import("./pages/PortfolioPage").then((m) => ({ default: m.PortfolioPage })),
@@ -24,6 +24,8 @@ const EcosystemPage = lazy(() =>
 const ContractsPage = lazy(() =>
   import("./pages/ContractsPage").then((m) => ({ default: m.ContractsPage })),
 );
+
+const DicePage = lazy(() => import("./pages/DicePage").then((m) => ({ default: m.DicePage })));
 
 const queryClient = new QueryClient();
 
@@ -69,6 +71,7 @@ function App() {
                     <Route path="/liquidity" element={<LiquidityPage />} />
                     <Route path="/ecosystem" element={<EcosystemPage />} />
                     <Route path="/contracts" element={<ContractsPage />} />
+                    <Route path="/dice" element={<DicePage />} />
                   </Routes>
                 </Suspense>
               </PageLayout>

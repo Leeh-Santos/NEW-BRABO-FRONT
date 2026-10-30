@@ -1,0 +1,13 @@
+import { useEffect, useState } from "react";
+
+/** Current unix time in seconds, re-rendering every `intervalMs` — drives expiry countdowns. */
+export function useNow(intervalMs = 15_000) {
+  const [now, setNow] = useState(() => Math.floor(Date.now() / 1000));
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Math.floor(Date.now() / 1000)), intervalMs);
+    return () => clearInterval(id);
+  }, [intervalMs]);
+
+  return now;
+}

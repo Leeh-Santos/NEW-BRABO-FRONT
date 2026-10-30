@@ -1308,6 +1308,265 @@ a:hover { color: var(--cyan-hi); }
   --rk-shadows-connectButton: none;
 }
 
+/* ── Dice ────────────────────────────────────────────────────────────────────
+   pages/DicePage. Same vocabulary as the rest of the app: ruled grids on a
+   hairline fill, mono figures, cyan only on what you can press. The coin is the
+   one object allowed some motion, because the motion *is* the state — it spins
+   for exactly as long as a VRF answer is outstanding. */
+.dice-stats { margin-bottom: 24px; }
+
+.dice-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--gold-tint);
+  border: 1px solid rgba(224, 168, 96, 0.35);
+  border-radius: var(--r-lg);
+  font-size: var(--t-13);
+  color: var(--ink-2);
+}
+
+.dice-banner strong { color: var(--gold-hi); font-family: var(--font-mono); font-weight: 500; }
+
+.dice-play {
+  display: grid;
+  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: stretch;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--hair);
+}
+
+@media (max-width: 860px) {
+  .dice-play { grid-template-columns: 1fr; }
+}
+
+.dice-create-card { max-width: none; }
+
+.dice-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.dice-presets { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 18px; }
+
+.dice-fineprint { margin-top: 14px; font-size: var(--t-12); color: var(--ink-3); }
+
+/* ── The table ── */
+.flip-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-lg);
+  transition: border-color var(--t-slow) var(--ease);
+}
+
+.flip-stage.is-win { border-color: rgba(52, 211, 153, 0.45); }
+.flip-stage.is-loss { border-color: rgba(251, 113, 133, 0.35); }
+
+.flip-stage-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
+.coin-pair {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 5vw, 48px);
+  padding: 32px 0 24px;
+}
+
+.coin-vs { font-family: var(--font-mono); font-size: var(--t-12); color: var(--ink-3); }
+
+.flip-stage-result { text-align: center; }
+.flip-stage-result h3 { margin-bottom: 8px; }
+.flip-stage.is-win .flip-stage-result h3 { color: var(--green); }
+.flip-stage.is-loss .flip-stage-result h3 { color: var(--red); }
+
+.flip-stage-copy {
+  max-width: 44ch;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: var(--t-13);
+}
+
+.flip-stage-copy strong { color: var(--ink); font-weight: 500; }
+
+/* ── Coin ── */
+.coin-slot { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+.coin-slot figcaption { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.coin-label { font-family: var(--font-mono); font-size: var(--t-12); color: var(--ink-3); }
+.coin-result { font-size: var(--t-14); font-weight: 500; }
+
+.coin {
+  --coin: clamp(88px, 14vw, 124px);
+  position: relative;
+  width: var(--coin);
+  height: var(--coin);
+  transform-style: preserve-3d;
+  transition: transform 900ms var(--ease-out);
+}
+
+.coin.is-heads { transform: rotateY(0deg); }
+.coin.is-tails { transform: rotateY(180deg); }
+.coin.is-idle { opacity: 0.45; }
+.coin.is-spinning { animation: coin-spin 700ms linear infinite; }
+
+@keyframes coin-spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+.coin-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 2px solid var(--gold);
+  box-shadow: inset 0 0 0 6px var(--surface), inset 0 0 0 7px rgba(224, 168, 96, 0.35);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* The official logo, cropped (src/assets/brand/brabo-coin-256.webp) so the
+   whole bull — horn tips to chin — sits inside a circle. It fills the face up
+   to the thin inner ring, so the artwork reads as struck into the coin. */
+.coin-heads img {
+  position: absolute;
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.coin-tails { transform: rotateY(180deg); }
+
+.coin-tails span {
+  font-family: var(--font-sans);
+  font-size: calc(var(--coin) * 0.22);
+  font-weight: 700;
+  font-stretch: var(--wider);
+  letter-spacing: -0.04em;
+  color: var(--gold-hi);
+}
+
+/* The spin is information, not decoration — under reduced motion it becomes a
+   slow pulse so "still waiting" is still legible. */
+@media (prefers-reduced-motion: reduce) {
+  .coin.is-spinning { animation: breathe 1.6s var(--ease) infinite; animation-duration: 1.6s !important; animation-iteration-count: infinite !important; }
+}
+
+/* ── Game tables ── */
+.dice-section { padding: 56px 0; border-bottom: 1px solid var(--hair); }
+
+.dice-table {
+  display: grid;
+  gap: 1px;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.dice-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1.6fr) minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 0.9fr) 170px;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 10px 16px 10px 20px;
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  font-variant-numeric: tabular-nums;
+  transition: background var(--t-mid) var(--ease);
+}
+
+.dice-row:not(.dice-row-head):hover { background: var(--surface-2); }
+.dice-row.is-clickable { cursor: pointer; }
+
+.dice-row-head {
+  min-height: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: var(--abyss-2);
+  font-size: var(--t-12);
+  color: var(--ink-3);
+}
+
+.dice-cell-id { color: var(--ink-3); }
+.dice-cell-player { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; color: var(--ink-2); }
+.dice-cell-stake small,
+.dice-status small { color: var(--ink-3); font-size: var(--t-11); }
+.dice-cell-time { color: var(--ink-3); }
+.dice-cell-action { display: flex; justify-content: flex-end; }
+
+.dice-vs { color: var(--ink-3); font-size: var(--t-11); }
+.dice-you { color: var(--gold-hi); }
+.dice-side { color: var(--ink); }
+
+.dice-status.tone-win { color: var(--green); }
+.dice-status.tone-loss { color: var(--red); }
+.dice-status.tone-open { color: var(--cyan); }
+.dice-status.tone-pending { color: var(--amber); }
+.dice-status.tone-muted { color: var(--ink-3); }
+
+.dice-action.fund-btn {
+  width: auto;
+  min-height: 36px;
+  padding: 8px 14px;
+  font-size: var(--t-12);
+  clip-path: polygon(0 0, calc(100% - var(--chamfer-sm)) 0, 100% var(--chamfer-sm), 100% 100%, 0 100%);
+}
+
+.dice-action.btn-secondary { min-height: 34px; font-size: var(--t-12); }
+.btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.dice-empty {
+  padding: 28px 20px;
+  border: 1px dashed var(--hair-2);
+  border-radius: var(--r-lg);
+  color: var(--ink-3);
+  font-size: var(--t-13);
+}
+
+/* Narrow screens: each row becomes a two-line card — id, players and action on
+   top; stake, side and time underneath. The header row has nothing to label. */
+@media (max-width: 720px) {
+  .dice-play { padding-bottom: 40px; }
+  .dice-section { padding: 40px 0; }
+  .dice-row-head { display: none; }
+  .dice-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "id player action"
+      "stake side time";
+    row-gap: 6px;
+    padding: 14px 16px;
+  }
+  .dice-row > :nth-child(1) { grid-area: id; }
+  .dice-row > :nth-child(2) { grid-area: player; }
+  .dice-row > :nth-child(3) { grid-area: stake; }
+  .dice-row > :nth-child(4) { grid-area: side; }
+  .dice-row > :nth-child(5) { grid-area: time; text-align: right; }
+  .dice-row > :nth-child(6) { grid-area: action; }
+  .flip-stage { padding: 20px; }
+}
+
 /* ── Utilities ────────────────────────────────────────────────────────────── */
 .sr-only {
   position: absolute;

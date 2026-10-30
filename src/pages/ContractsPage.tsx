@@ -43,6 +43,13 @@ export function ContractsPage() {
           address={CONTRACT_ADDRESSES.PICA_TOKEN}
           explorerUrl={`https://basescan.org/token/${CONTRACT_ADDRESSES.PICA_TOKEN}`}
         />
+        <ContractAddressCard
+          icon="🎲"
+          name="Brabo Dice"
+          description="1v1 $BRB coin flip. Stakes are escrowed on-chain and every flip is drawn by Chainlink VRF."
+          address={CONTRACT_ADDRESSES.BRABO_DICE}
+          explorerUrl={`https://basescan.org/address/${CONTRACT_ADDRESSES.BRABO_DICE}`}
+        />
       </div>
 
       <section className="security-notice">

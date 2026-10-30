@@ -6,6 +6,7 @@ export const CONTRACT_ADDRESSES = {
     FUNDME: "0x010996547d68dA484b4FeBCC337A97d48b3Af8D7",
     NFT: "0x680cc2149bc0E7A4Aa83f462F28aee1639C1355a",
     PICA_TOKEN: "0x07f6A4932e8be5Be7a0aC1bfCAB5EF6b95B0b1a2",
+    BRABO_DICE: "0x5C3bb2E6f3019Bd15b244464548336f90F92AF8a",
 } as const;
 
 export const FUNDME_ABI =  [
@@ -1730,6 +1731,197 @@ export const ERC20_ABI = [
         outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
         stateMutability: "view",
     },
+    {
+        type: "function",
+        name: "allowance",
+        inputs: [
+            { name: "owner", type: "address", internalType: "address" },
+            { name: "spender", type: "address", internalType: "address" },
+        ],
+        outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "approve",
+        inputs: [
+            { name: "spender", type: "address", internalType: "address" },
+            { name: "amount", type: "uint256", internalType: "uint256" },
+        ],
+        outputs: [{ name: "", type: "bool", internalType: "bool" }],
+        stateMutability: "nonpayable",
+    },
+] as const;
+
+// BraboDice — 1v1 $BRB coin flip settled by Chainlink VRF. Hand-written from contracts/BraboDice.sol
+// (player-facing functions, views, events and errors only; VRF/ownership plumbing omitted).
+const DICE_GAME_TUPLE = {
+    name: "",
+    type: "tuple",
+    internalType: "struct BraboDice.Game",
+    components: [
+        { name: "creator", type: "address", internalType: "address" },
+        { name: "challenger", type: "address", internalType: "address" },
+        { name: "winner", type: "address", internalType: "address" },
+        { name: "amount", type: "uint256", internalType: "uint256" },
+        { name: "createdAt", type: "uint64", internalType: "uint64" },
+        { name: "acceptedAt", type: "uint64", internalType: "uint64" },
+        { name: "creatorSide", type: "uint8", internalType: "uint8" },
+        { name: "challengerSide", type: "uint8", internalType: "uint8" },
+        { name: "status", type: "uint8", internalType: "enum BraboDice.Status" },
+    ],
+} as const;
+
+export const BRABO_DICE_ABI = [
+    {
+        type: "function",
+        name: "throwCoin",
+        inputs: [{ name: "amount", type: "uint256", internalType: "uint256" }],
+        outputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+        stateMutability: "nonpayable",
+    },
+    {
+        type: "function",
+        name: "acceptChallenge",
+        inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+        outputs: [],
+        stateMutability: "nonpayable",
+    },
+    {
+        type: "function",
+        name: "refund",
+        inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+        outputs: [],
+        stateMutability: "nonpayable",
+    },
+    {
+        type: "function",
+        name: "withdraw",
+        inputs: [],
+        outputs: [],
+        stateMutability: "nonpayable",
+    },
+    {
+        type: "function",
+        name: "getGame",
+        inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+        outputs: [DICE_GAME_TUPLE],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "getOpenGames",
+        inputs: [],
+        outputs: [{ name: "", type: "uint256[]", internalType: "uint256[]" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "isExpired",
+        inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+        outputs: [{ name: "", type: "bool", internalType: "bool" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "s_nextGameId",
+        inputs: [],
+        outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "s_pendingWithdrawals",
+        inputs: [{ name: "player", type: "address", internalType: "address" }],
+        outputs: [{ name: "amount", type: "uint256", internalType: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "GAME_DURATION",
+        inputs: [],
+        outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "event",
+        name: "CoinThrown",
+        inputs: [
+            { name: "gameId", type: "uint256", indexed: true, internalType: "uint256" },
+            { name: "creator", type: "address", indexed: true, internalType: "address" },
+            { name: "amount", type: "uint256", indexed: false, internalType: "uint256" },
+            { name: "requestId", type: "uint256", indexed: false, internalType: "uint256" },
+        ],
+        anonymous: false,
+    },
+    {
+        type: "event",
+        name: "GameOpened",
+        inputs: [
+            { name: "gameId", type: "uint256", indexed: true, internalType: "uint256" },
+            { name: "creator", type: "address", indexed: true, internalType: "address" },
+            { name: "amount", type: "uint256", indexed: false, internalType: "uint256" },
+            { name: "creatorSide", type: "uint8", indexed: false, internalType: "uint8" },
+        ],
+        anonymous: false,
+    },
+    {
+        type: "event",
+        name: "ChallengeAccepted",
+        inputs: [
+            { name: "gameId", type: "uint256", indexed: true, internalType: "uint256" },
+            { name: "challenger", type: "address", indexed: true, internalType: "address" },
+            { name: "requestId", type: "uint256", indexed: false, internalType: "uint256" },
+        ],
+        anonymous: false,
+    },
+    {
+        type: "event",
+        name: "GameFinished",
+        inputs: [
+            { name: "gameId", type: "uint256", indexed: true, internalType: "uint256" },
+            { name: "winner", type: "address", indexed: true, internalType: "address" },
+            { name: "creatorSide", type: "uint8", indexed: false, internalType: "uint8" },
+            { name: "challengerSide", type: "uint8", indexed: false, internalType: "uint8" },
+            { name: "payout", type: "uint256", indexed: false, internalType: "uint256" },
+        ],
+        anonymous: false,
+    },
+    {
+        type: "event",
+        name: "GameRefunded",
+        inputs: [{ name: "gameId", type: "uint256", indexed: true, internalType: "uint256" }],
+        anonymous: false,
+    },
+    {
+        type: "event",
+        name: "PayoutDeferred",
+        inputs: [
+            { name: "player", type: "address", indexed: true, internalType: "address" },
+            { name: "amount", type: "uint256", indexed: false, internalType: "uint256" },
+        ],
+        anonymous: false,
+    },
+    { type: "error", name: "BraboDice__ZeroAmount", inputs: [] },
+    { type: "error", name: "BraboDice__TransferFailed", inputs: [] },
+    { type: "error", name: "BraboDice__FeeOnTransferNotSupported", inputs: [] },
+    {
+        type: "error",
+        name: "BraboDice__GameNotOpen",
+        inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+    },
+    {
+        type: "error",
+        name: "BraboDice__GameExpired",
+        inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+    },
+    { type: "error", name: "BraboDice__CannotChallengeOwnGame", inputs: [] },
+    {
+        type: "error",
+        name: "BraboDice__NotRefundable",
+        inputs: [{ name: "gameId", type: "uint256", internalType: "uint256" }],
+    },
+    { type: "error", name: "BraboDice__NothingToWithdraw", inputs: [] },
 ] as const;
 
 // Base mainnet addresses used by the fund-quote preview (getQuoteSimple in the legacy site's
@@ -1779,6 +1971,7 @@ export const BRB_WETH_POOL_FEE = 3000;
     CONTRACT_ADDRESSES.FUNDME,
     CONTRACT_ADDRESSES.NFT,
     CONTRACT_ADDRESSES.PICA_TOKEN,
+    CONTRACT_ADDRESSES.BRABO_DICE,
     BASE_ADDRESSES.WETH,
     BASE_ADDRESSES.QUOTER_V2,
     BASE_ADDRESSES.BRB_WETH_POOL,

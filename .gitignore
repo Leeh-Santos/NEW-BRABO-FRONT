@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 firebase/public
+
+# Test output
+test-results/
+playwright-report/
