@@ -1,7 +1,7 @@
 // Integration tests: the frontend's BraboDice ABI, status model and error mapping, exercised
 // against the real deployed contract on a local Base-mainnet fork (see test/helpers/fork.ts).
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { parseEventLogs, parseUnits, toEventSelector, toFunctionSelector, zeroAddress } from "viem";
+import { parseAbi, parseEventLogs, parseUnits, toEventSelector, toFunctionSelector, zeroAddress } from "viem";
 import { BRABO_DICE_ABI, CONTRACT_ADDRESSES } from "../../src/config/contracts";
 import {
   DiceStatus,
@@ -30,6 +30,10 @@ import {
 
 const { alice, bob } = PLAYERS;
 const STAKE = parseUnits("1000", 18);
+const KEY_HASH_2_GWEI = "0x00b81b5a830cb0a4009fbd8904de511e28631e62ce5ad231373d3cdad373ccab";
+const RANDOM_WORDS_REQUESTED = toEventSelector(
+  "RandomWordsRequested(bytes32,uint256,uint256,uint256,uint16,uint32,uint32,bytes,address)",
+);
 const HEADS = 2n; // even word → side 0
 const TAILS = 3n; // odd word → side 1
 
@@ -96,6 +100,28 @@ describe("deployed contract matches the frontend config", () => {
         expect(code, item.name).toContain(toEventSelector(item).slice(2));
       }
     }
+  });
+
+  // The key hash is a private immutable, so it's read from the coordinator's request event. The
+  // lane's max gas price sets the LINK balance the subscription must hold before a flip is
+  // answered: the 30 gwei lane needs ~15x more than the 2 gwei one for the same real cost.
+  it("requests randomness on the 2 gwei Base VRF lane", async () => {
+    await approve(client, alice, STAKE);
+    const receipt = await diceTx(client, alice, "throwCoin", [STAKE]);
+    const coordinator = await client.readContract({ address: DICE, abi: VRF_ABI, functionName: "s_vrfCoordinator" });
+    const request = receipt.logs.find(
+      (log) => log.address.toLowerCase() === coordinator.toLowerCase() && log.topics[0] === RANDOM_WORDS_REQUESTED,
+    );
+    expect(request?.topics[1]).toBe(KEY_HASH_2_GWEI);
+
+    const [exists, maxGas] = await client.readContract({
+      address: coordinator,
+      abi: parseAbi(["function s_provingKeys(bytes32) view returns (bool exists, uint64 maxGas)"]),
+      functionName: "s_provingKeys",
+      args: [KEY_HASH_2_GWEI],
+    });
+    expect(exists).toBe(true);
+    expect(maxGas).toBe(2_000_000_000n);
   });
 
   it("reports a 24h game duration, matching lib/dice", async () => {
