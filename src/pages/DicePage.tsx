@@ -75,7 +75,7 @@ export function DicePage() {
             Chainlink VRF · Base
           </span>
           <h1 className="hero-title">
-            Brabo <span className="accent">Dice</span>
+            Brabo <span className="accent">flip</span>
           </h1>
           <p className="hero-subtitle">
             1v1 $BRB coin flip. Stake, flip, and let verifiable randomness decide who takes the pot.

@@ -1931,7 +1931,25 @@ export const BASE_ADDRESSES = {
     WETH: "0x4200000000000000000000000000000000000006",
     QUOTER_V2: "0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a",
     BRB_WETH_POOL: "0x224978d8428b56119c4C2BcE1d8D64B1Af5FAC29",
+    // The ETH/USD feed FundMe's PriceConverter prices `fund()` against (MINIMUM_USD check).
+    CHAINLINK_ETH_USD: "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70",
 } as const;
+
+export const CHAINLINK_FEED_ABI = [
+    {
+        inputs: [],
+        name: "latestRoundData",
+        outputs: [
+            { name: "roundId", type: "uint80", internalType: "uint80" },
+            { name: "answer", type: "int256", internalType: "int256" },
+            { name: "startedAt", type: "uint256", internalType: "uint256" },
+            { name: "updatedAt", type: "uint256", internalType: "uint256" },
+            { name: "answeredInRound", type: "uint80", internalType: "uint80" },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+] as const;
 
 // Uniswap V3 QuoterV2 — quoteExactInputSingle is not a `view` function (it works by reverting with
 // encoded return data), so it must be called via a static/simulate call, never sent as a real tx.
@@ -1975,4 +1993,5 @@ export const BRB_WETH_POOL_FEE = 3000;
     BASE_ADDRESSES.WETH,
     BASE_ADDRESSES.QUOTER_V2,
     BASE_ADDRESSES.BRB_WETH_POOL,
+    BASE_ADDRESSES.CHAINLINK_ETH_USD,
 ].forEach((address) => getAddress(address));

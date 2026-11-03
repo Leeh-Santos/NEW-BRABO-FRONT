@@ -20,7 +20,7 @@ export function Coin({ side, spinning, label }: CoinProps) {
           <img src={coinLogo} alt="" width={256} height={256} decoding="async" />
         </div>
         <div className="coin-face coin-tails">
-          <span>BRB</span>
+          <span>$BRB</span>
         </div>
       </div>
       <figcaption>

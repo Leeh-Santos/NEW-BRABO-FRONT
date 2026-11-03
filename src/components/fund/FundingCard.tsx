@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { formatEther } from "viem";
+import { formatEther, parseEther } from "viem";
 import { useAccount, useBalance } from "wagmi";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { useEthPrice } from "../../hooks/useEthPrice";
+import { useFundMinimum } from "../../hooks/useFundMinimum";
 import { useFundQuote } from "../../hooks/useFundQuote";
 import { useFundTransaction } from "../../hooks/useFundTransaction";
 import { useUserData } from "../../hooks/useUserData";
 import { formatUsd } from "../../lib/formatters";
-import { calculateBonusTokens } from "../../lib/quote";
+import { calculateBonusTokens, roundUpEth } from "../../lib/quote";
 import { QuoteBreakdown } from "./QuoteBreakdown";
 
 export function FundingCard() {
@@ -19,6 +20,8 @@ export function FundingCard() {
   const { data: quote, isFetching: isQuoteLoading } = useFundQuote(debouncedAmount);
   const { bonusPercentage, tierName, refetch: refetchUserData } = useUserData();
   const { data: ethPriceUsd } = useEthPrice();
+  const { minimumWei, minimumUsd } = useFundMinimum();
+  const minimumEth = minimumWei !== undefined ? roundUpEth(minimumWei) : undefined;
 
   const { fund, isBusy } = useFundTransaction(() => {
     setEthAmount("");
@@ -32,7 +35,10 @@ export function FundingCard() {
   const totalWithBonus = quote ? quote.totalPica + bonusPica : undefined;
 
   const isValidAmount = parseFloat(ethAmount) > 0;
-  const canSubmit = isConnected && isValidAmount && !isBusy;
+  // fund() reverts below MINIMUM_USD, so block it here instead of letting the wallet fail.
+  const isBelowMinimum =
+    isValidAmount && minimumWei !== undefined && toWei(ethAmount) < minimumWei;
+  const canSubmit = isConnected && isValidAmount && !isBelowMinimum && !isBusy;
 
   const usdValue =
     isValidAmount && ethPriceUsd !== undefined
@@ -70,6 +76,15 @@ export function FundingCard() {
         </button>
       </div>
       {usdValue !== undefined && <div className="eth-input-usd">≈ {formatUsd(usdValue)}</div>}
+      {minimumEth !== undefined && minimumUsd !== undefined && (
+        <div className={`eth-input-min${isBelowMinimum ? " is-below" : ""}`}>
+          Minimum{" "}
+          <button type="button" className="eth-input-min-btn" onClick={() => setEthAmount(minimumEth)}>
+            {minimumEth} ETH
+          </button>{" "}
+          (≈ {formatUsd(minimumUsd)})
+        </div>
+      )}
 
       {isValidAmount && (
         <QuoteBreakdown
@@ -95,10 +110,20 @@ export function FundingCard() {
           ? "Connect Wallet First"
           : isBusy
             ? "Processing..."
-            : isValidAmount
+            : isBelowMinimum && minimumUsd !== undefined
+              ? `Below ${formatUsd(minimumUsd)} Minimum`
+              : isValidAmount
               ? "Fund Now"
               : "Enter Amount"}
       </button>
     </div>
   );
+}
+
+function toWei(ethAmount: string): bigint {
+  try {
+    return parseEther(ethAmount);
+  } catch {
+    return 0n;
+  }
 }

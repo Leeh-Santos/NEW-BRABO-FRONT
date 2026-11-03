@@ -6,7 +6,7 @@ const TABS = [
   { to: "/liquidity", label: "Liquidity" },
   { to: "/ecosystem", label: "Ecosystem" },
   { to: "/contracts", label: "Contracts" },
-  { to: "/dice", label: "Dice" },
+  { to: "/dice", label: "Brabo Flip" },
 ];
 
 export function PageNav() {
